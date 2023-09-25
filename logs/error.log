@@ -1,6 +1,5 @@
 [Thu Jan 05 09:57:54.723848 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
 [Thu Jan 05 09:59:20.322567 2023] [core:info] [pid 8164:tid 360] AH00096: removed module mpm_winnt
-[Thu Jan 05 10:02:45.123456 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
 [Thu Jan 05 09:57:54.723848 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15[Thu Jan 05 09:57:54.723848 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
 [Thu Jan 05 09:59:20.322567 2023] [core:info] [pid 8164:tid 360] AH00096: removed module mpm_winnt
 [Thu Jan 05 10:02:45.123456 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
@@ -34,6 +33,7 @@
 [Thu Jan 05 10:05:12.987654 2023] [http:error] [pid 8164:tid 360] [client 192.168.0.1:54321] AH02102: CACertificateFile '/path/to/certificate.crt' does not exist or is empty, referer: https://example.com/page
 [Thu Jan 05 10:10:30.555555 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
 [Thu Jan 05 10:10:30.555555 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
+[Thu Jan 05 10:02:45.123456 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
 [Thu Jan 05 10:12:18.111111 2023] [http:info] [pid 8164:tid 360] AH01264: Invalid host header: example.com:8080
 [Thu Jan 05 09:57:54.723848 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15[Thu Jan 05 09:57:54.723848 2023] [mpm_winnt:notice] [pid 8164:tid 360] AH00456: Apache Lounge VS16 Server built: Jun 22 2022 09:58:15
 [Thu Jan 05 09:59:20.322567 2023] [core:info] [pid 8164:tid 360] AH00096: removed module mpm_winnt
