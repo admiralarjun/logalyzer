@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Access Denied",
+        "pattern": "Access\\s*denied",
+        "color": "red",
+        "description": "Detects log entries indicating access denial."
+    },
+    {
+        "name": "SQL Injection Attempt",
+        "pattern": "Attempted SQL injection detected in query",
+        "color": "red",
+        "description": "Detects log entries indicating attempted SQL injection attacks."
+    },
+    {
+        "name": "Unauthorized Access Attempt",
+        "pattern": "Unauthorized access attempt to sensitive resource",
+        "color": "red",
+        "description": "Detects log entries indicating unauthorized access attempts to sensitive resources."
+    }
+]
