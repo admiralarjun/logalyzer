@@ -81,12 +81,14 @@ def analyze_log(request, log_file_name):
     threats = []
 
     # Analyze the log content for threats using signature-based detection
+    print(log_content.count('\n'))
     for signature in threat_signatures:
         matches = re.finditer(signature["pattern"], log_content, re.IGNORECASE)
         for match in matches:
             threat = match.group(0)
             threats.append(threat)
-
+    log_content = (log_content.split("\n"))
+    print(log_content)
     # Render a template with the detected threats and threat signatures
     return render(request, 'analyze_log.html', {'log_content': log_content, 'threats': threats, 'threat_signatures': threat_signatures})
 
