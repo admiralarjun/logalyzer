@@ -13,6 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><i class="fas fa-exclamation-triangle"></i><strong> Detected Threats</strong></h5>
+                    <hr>
                     <ul>
                         {% for threat in threats %}
                             <li>{{ threat }}</li>
@@ -27,16 +28,17 @@
         <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><i class="fas fa-cogs"></i> <strong>Threat Signatures</strong></h5>
+                    <hr>
                     <ul>
                         {% for signature in threat_signatures %}
                             <li>{{ signature.name }} - {{ signature.description }}</li>
                         {% endfor %}
                     </ul>
                 </div>
-            </div>
+        </div>
         </div>
     </div>
-
+    <hr>
     <!-- Log Content -->
     <div class="row">
         <div class="col-md-12">
