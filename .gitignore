@@ -1,3 +1,4 @@
 /db.sqlite3
 log_analyzer/__pycache__/*
 logalyzer/__pycache__/*
+*.pot

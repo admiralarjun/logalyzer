@@ -1,0 +1,10 @@
+.log-content {
+    height: 90vh !important;
+    overflow-y: scroll;
+}
+
+.threat-pattern-content, .threat-signature-content {
+    height: 42vh !important;
+    overflow-y: scroll;
+
+}

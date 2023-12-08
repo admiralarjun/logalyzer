@@ -1,14 +1,11 @@
 # log_analyzer/views.py
 from django.shortcuts import render, redirect
-from .models import LogEntry
+from .models import LogLine
 from .forms import LogFileUploadForm
 import os,re,json
 from django.core.files.storage import default_storage
-
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils.text import slugify
-
-
 
 def get_unique_filename(file_name):
     # Generates a unique filename to prevent overwriting existing files
@@ -68,29 +65,34 @@ def get_uploaded_log_files():
         log_files.append(file_name)
     return log_files
 
-
 def analyze_log(request, log_file_name):
     # Read threat signatures from the JSON file
     with open('signatures/threat_signatures.json', 'r') as json_file:
         threat_signatures = json.load(json_file)
 
     log_content = get_log_content(log_file_name)
-    print(type(log_content))
 
-    # Initialize a list to store detected threats
-    threats = []
+    # Initialize a list to store log lines as objects
+    log_lines = []
+    detected_threats = []
 
     # Analyze the log content for threats using signature-based detection
-    print(log_content.count('\n'))
-    for signature in threat_signatures:
-        matches = re.finditer(signature["pattern"], log_content, re.IGNORECASE)
-        for match in matches:
-            threat = match.group(0)
-            threats.append(threat)
-    log_content = (log_content.split("\n"))
-    print(log_content)
-    # Render a template with the detected threats and threat signatures
-    return render(request, 'analyze_log.html', {'log_content': log_content, 'threats': threats, 'threat_signatures': threat_signatures})
+    lineNumber = 0
+    for line in log_content.split('\n'):
+        lineNumber += 1
+        log_line = LogLine(lineNumber,line)
+        log_line.analyze_threat(threat_signatures)
+        log_lines.append(log_line)
+        # if log_line.is_threat and log_line.threat_signature["pattern"] not in detected_threats:
+        #     detected_threats.append(log_line.threat_signature)
+
+        if log_line.is_threat:
+            detected_threats.append(log_line)
+
+
+    # Render a template with the log lines and threat signatures
+    return render(request, 'analyze_log.html', {'log_lines': log_lines, 'detected_threats': detected_threats})
+
 
 def get_log_content(log_file_name):
     # Retrieve and return the content of the selected log file
