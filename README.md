@@ -1,12 +1,10 @@
 ## Development Environment [#7](https://github.com/admiralarjun/logalyzer/issues/7)
-- - -
+Read below isntruction for setting up and starting your development process. Read them very carefully and in case of doubt, raise issue or reach out in chat.
 
 ### Clonning
-- - -
 Clone your forked repo, before clonning or making change make sure to sync your fork so that it will have the latest updated code. This will also avoid push conflicts.
 
 ### Managing Dependencies
-- - -
 We will manage dependencies in Django is to use a virtual environment. A virtual environment is a isolated Python environment that contains its own set of dependencies. This can be useful for preventing conflicts between different projects that you are working on. 
 
 1. To create a virtual environment, you can use the following command:
