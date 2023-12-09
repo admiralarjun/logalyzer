@@ -1,3 +1,12 @@
+## Intro
+SIH 1408 | IT System log analyzer | Ministry of Home Affairs | Blockchain & Cybersecurity
+
+CRPF units/offices and personnel are deployed in different location of CRPF. There is no centralised system to analyse the log of IT system by the experts to access threats and breaches. Proposed Solution: Centralized system should be developed for analysing the systems deployed at the different location of the country Expert per problems statement
+
+## Project & Active issues
+- https://github.com/users/admiralarjun/projects/3/ 
+- https://github.com/admiralarjun/logalyzer/issues
+
 ## Development Environment [#7](https://github.com/admiralarjun/logalyzer/issues/7)
 Read below isntruction for setting up and starting your development process. Read them very carefully and in case of doubt, raise issue or reach out in chat.
 
