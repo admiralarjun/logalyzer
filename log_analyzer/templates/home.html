@@ -10,13 +10,13 @@
 
             <!-- Log file upload form -->
             <form method="post" enctype="multipart/form-data" class="col-md-6">
-                {% csrf_token %}
-                <label for="formFileLg" class="form-label"><i class="fa-solid fa-upload"></i> Select log file</label>
-                <div class="input-group mb-4">
-                    <input class="form-control form-control-lg bg-dark text-white" name="log_file" id="log_file" type="file">
-                    <button class="btn btn-outline-secondary bg-dark text-white" type="submit" id="button-addon2">Upload</button>
-                </div>
-            </form>
+    {% csrf_token %}
+    <label for="formFileLg" class="form-label"><i class="fa-solid fa-upload"></i> Select log file</label>
+    <div class="input-group mb-4">
+        <input class="form-control form-control-lg bg-dark text-white" name="log_file" id="log_file" type="file" accept=".log">
+        <button class="btn btn-outline-secondary bg-dark text-white" type="submit" id="button-addon2">Upload</button>
+    </div>
+</form>
 
             <!-- Search bar and filters -->
             <form method="get" class="col-md-6">
@@ -38,7 +38,7 @@
         </ul>
     </div>
 
-  
+
 
     <script src="{% static 'log_analyzer/templates/home.js' %}"></script>
 {% endblock %}

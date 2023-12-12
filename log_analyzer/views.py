@@ -1,11 +1,14 @@
 # log_analyzer/views.py
 from django.shortcuts import render, redirect
-from .models import LogLine
+# from .models import LogLine
 from .forms import LogFileUploadForm
 import os,re,json
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils.text import slugify
+from django.http import JsonResponse
+
+
 
 def get_unique_filename(file_name):
     # Generates a unique filename to prevent overwriting existing files
@@ -29,7 +32,7 @@ def home(request):
             log_file = request.FILES['log_file']
             log_file_name = log_file.name
             log_file_path = os.path.join('logs', log_file_name)
-            
+
             # Check if the file already exists
             if default_storage.exists(log_file_path):
                 # Append a number to the filename to avoid conflicts
@@ -39,17 +42,13 @@ def home(request):
                     log_file_name = f"{base_name}_{count}{extension}"
                     log_file_path = os.path.join('logs', log_file_name)
                     count += 1
-
             # Save the uploaded log file
             with default_storage.open(log_file_path, 'wb+') as destination:
                 for chunk in log_file.chunks():
                     destination.write(chunk)
-
             return redirect('home')  # Redirect back to the home page after uploading
-
     else:
         form = LogFileUploadForm()
-
     # Filter log files based on user input
     search_query = request.GET.get('search_query', '')  # Get the search query from the request
     if search_query:
@@ -103,3 +102,7 @@ def get_log_content(log_file_name):
             return log_content.decode('utf-8')
     else:
         return "Log file not found."
+
+
+
+

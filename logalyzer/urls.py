@@ -23,7 +23,7 @@ from log_analyzer.views import home, analyze_log
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('analyze/<str:log_file_name>/', analyze_log, name='analyze_log'), 
+    path('analyze/<str:log_file_name>/', analyze_log, name='analyze_log')
 ]
 
 if settings.DEBUG:
