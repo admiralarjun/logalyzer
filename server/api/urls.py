@@ -19,4 +19,5 @@ from . import views
 
 
 urlpatterns = [
+    path('save_log_line/', views.save_log_line, name='save_log_line'),
 ]
