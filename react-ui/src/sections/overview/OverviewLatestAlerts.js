@@ -1,3 +1,5 @@
+// src/sections/overview/OverviewLatestAlerts.js
+import React from 'react';
 import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
@@ -19,27 +21,27 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
 
 const statusMap = {
-  pending: 'warning',
-  delivered: 'success',
-  refunded: 'error'
+  open: 'error',
+  inProgress: 'warning',
+  closed: 'success'
 };
 
-export const OverviewLatestOrders = (props) => {
-  const { orders = [], sx } = props;
+const OverviewLatestAlerts = (props) => {
+  const { alerts = [], sx } = props;
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Orders" />
+      <CardHeader title="Latest Alerts" />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Order
+                  Alert
                 </TableCell>
                 <TableCell>
-                  Customer
+                  Source
                 </TableCell>
                 <TableCell sortDirection="desc">
                   Date
@@ -50,26 +52,26 @@ export const OverviewLatestOrders = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => {
-                const createdAt = format(order.createdAt, 'dd/MM/yyyy');
+              {alerts.map((alert) => {
+                const createdAt = format(alert.createdAt, 'dd/MM/yyyy');
 
                 return (
                   <TableRow
                     hover
-                    key={order.id}
+                    key={alert.id}
                   >
                     <TableCell>
-                      {order.ref}
+                      {alert.name}
                     </TableCell>
                     <TableCell>
-                      {order.customer.name}
+                      {alert.source}
                     </TableCell>
                     <TableCell>
                       {createdAt}
                     </TableCell>
                     <TableCell>
-                      <SeverityPill color={statusMap[order.status]}>
-                        {order.status}
+                      <SeverityPill color={statusMap[alert.status]}>
+                        {alert.status}
                       </SeverityPill>
                     </TableCell>
                   </TableRow>
@@ -98,7 +100,9 @@ export const OverviewLatestOrders = (props) => {
   );
 };
 
-OverviewLatestOrders.prototype = {
-  orders: PropTypes.array,
+OverviewLatestAlerts.propTypes = {
+  alerts: PropTypes.array,
   sx: PropTypes.object
 };
+
+export { OverviewLatestAlerts };
