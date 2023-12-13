@@ -4,7 +4,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from .models import LogLines, CrpfDevice, ThreatInfo, Alerts
-from .serializers import LogLinesSerializer, AssigneeUpdateSerializer
 import re
 @api_view(['POST'])
 def save_log_line(request):
