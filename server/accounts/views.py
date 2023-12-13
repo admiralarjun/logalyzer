@@ -44,5 +44,4 @@ def test_token(request):
 def logout(request):
     # Delete the user's token
     request.auth.delete()
-
     return Response("Successfully logged out", status=status.HTTP_200_OK)
