@@ -2,14 +2,14 @@ import Head from 'next/head';
 import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { OverviewBudget } from 'src/sections/overview/overview-budget';
-import { OverviewLatestOrders } from 'src/sections/overview/overview-latest-orders';
+import { OverviewThreats } from 'src/sections/overview/OverviewThreats';
+import { OverviewLatestAlerts } from 'src/sections/overview/OverviewLatestAlerts';
 import { OverviewLatestProducts } from 'src/sections/overview/overview-latest-products';
-import { OverviewSales } from 'src/sections/overview/overview-sales';
-import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
-import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
-import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
-import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
+import { OverviewAnnualThreats } from 'src/sections/overview/OverviewAnnualThreats';
+import { OverviewRemediationInProcess } from 'src/sections/overview/OverviewRemediationInProcess';
+import { OverviewRemediatedThreats } from 'src/sections/overview/OverviewRemediatedThreats';
+import { OverviewThreatsIgnored } from 'src/sections/overview/OverviewThreatsIgnored';
+import { OverviewThreatTrafficSource } from 'src/sections/overview/OverviewThreatTrafficSource';
 
 const now = new Date();
 
@@ -17,7 +17,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Overview | Devias Kit
+        Overview | Logalyzer
       </title>
     </Head>
     <Box
@@ -37,11 +37,11 @@ const Page = () => (
             sm={6}
             lg={3}
           >
-            <OverviewBudget
+            <OverviewThreats
               difference={12}
               positive
               sx={{ height: '100%' }}
-              value="$24k"
+              value="25"
             />
           </Grid>
           <Grid
@@ -49,7 +49,7 @@ const Page = () => (
             sm={6}
             lg={3}
           >
-            <OverviewTotalCustomers
+            <OverviewRemediatedThreats
               difference={16}
               positive={false}
               sx={{ height: '100%' }}
@@ -61,7 +61,7 @@ const Page = () => (
             sm={6}
             lg={3}
           >
-            <OverviewTasksProgress
+            <OverviewRemediationInProcess
               sx={{ height: '100%' }}
               value={75.5}
             />
@@ -71,16 +71,16 @@ const Page = () => (
             sm={6}
             lg={3}
           >
-            <OverviewTotalProfit
+            <OverviewThreatsIgnored
               sx={{ height: '100%' }}
-              value="$15k"
+              value="96"
             />
           </Grid>
           <Grid
             xs={12}
             lg={8}
           >
-            <OverviewSales
+            <OverviewAnnualThreats
               chartSeries={[
                 {
                   name: 'This year',
@@ -99,9 +99,9 @@ const Page = () => (
             md={6}
             lg={4}
           >
-            <OverviewTraffic
+            <OverviewThreatTrafficSource
               chartSeries={[63, 15, 22]}
-              labels={['Desktop', 'Tablet', 'Phone']}
+              labels={['Desktop', 'Server', 'Phone']}
               sx={{ height: '100%' }}
             />
           </Grid>
@@ -151,8 +151,8 @@ const Page = () => (
             md={12}
             lg={8}
           >
-            <OverviewLatestOrders
-              orders={[
+            <OverviewLatestAlerts
+              alerts={[
                 {
                   id: 'f69f88012978187a6c12897f',
                   ref: 'DEV1049',

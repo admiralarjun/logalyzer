@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
+import ShieldExclamationIcon from '@heroicons/react/24/solid/ShieldExclamationIcon'
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
-export const OverviewTotalCustomers = (props) => {
+export const OverviewThreats = (props) => {
   const { difference, positive = false, sx, value } = props;
 
   return (
@@ -21,7 +21,7 @@ export const OverviewTotalCustomers = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Customers
+              Threats
             </Typography>
             <Typography variant="h4">
               {value}
@@ -29,13 +29,13 @@ export const OverviewTotalCustomers = (props) => {
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: 'success.main',
+              backgroundColor: 'error.main',
               height: 56,
               width: 56
             }}
           >
             <SvgIcon>
-              <UsersIcon />
+              <ShieldExclamationIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -77,10 +77,9 @@ export const OverviewTotalCustomers = (props) => {
   );
 };
 
-OverviewTotalCustomers.propTypes = {
+OverviewThreats.prototypes = {
   difference: PropTypes.number,
   positive: PropTypes.bool,
-  value: PropTypes.string.isRequired,
-  sx: PropTypes.object
+  sx: PropTypes.object,
+  value: PropTypes.string.isRequired
 };
-

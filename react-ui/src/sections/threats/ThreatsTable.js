@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { format } from 'date-fns';
 import {
   Avatar,
   Box,
@@ -17,7 +16,7 @@ import {
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-export const CustomersTable = (props) => {
+export const ThreatsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -56,31 +55,25 @@ export const CustomersTable = (props) => {
                   />
                 </TableCell>
                 <TableCell>
-                  Name
+                  Threat Name
                 </TableCell>
                 <TableCell>
-                  Email
+                  Threat Pattern
                 </TableCell>
                 <TableCell>
-                  Location
+                  Threat Score
                 </TableCell>
-                <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Signed Up
-                </TableCell>
+                {/* Add more columns as needed */}
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+              {items.map((threat) => {
+                const isSelected = selected.includes(threat.id);
 
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={threat.id}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
@@ -88,39 +81,23 @@ export const CustomersTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.id);
+                            onSelectOne?.(threat.id);
                           } else {
-                            onDeselectOne?.(customer.id);
+                            onDeselectOne?.(threat.id);
                           }
                         }}
                       />
                     </TableCell>
                     <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {customer.name}
-                        </Typography>
-                      </Stack>
+                      {threat.name}
                     </TableCell>
                     <TableCell>
-                      {customer.email}
+                      {threat.pattern}
                     </TableCell>
                     <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
+                      {threat.score}
                     </TableCell>
-                    <TableCell>
-                      {customer.phone}
-                    </TableCell>
-                    <TableCell>
-                      {createdAt}
-                    </TableCell>
+                    {/* Add more cells as needed */}
                   </TableRow>
                 );
               })}
@@ -141,7 +118,7 @@ export const CustomersTable = (props) => {
   );
 };
 
-CustomersTable.propTypes = {
+ThreatsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,

@@ -71,13 +71,13 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                Devias
+                Logalyzer
               </Typography>
               <Typography
                 color="neutral.400"
                 variant="body2"
               >
-                Production
+                IT Log Analyzer
               </Typography>
             </div>
             <SvgIcon
@@ -134,30 +134,15 @@ export const SideNav = (props) => {
             color="neutral.100"
             variant="subtitle2"
           >
-            Need more features?
+            Logalyzer
           </Typography>
           <Typography
             color="neutral.500"
             variant="body2"
           >
-            Check out our Pro solution template.
+            IT system log analyzer designed to fortify the organization against digital adversaries.
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              mt: 2,
-              mx: 'auto',
-              width: '160px',
-              '& img': {
-                width: '100%'
-              }
-            }}
-          >
-            <img
-              alt="Go to pro"
-              src="/assets/devias-kit-pro.png"
-            />
-          </Box>
+          
           <Button
             component="a"
             endIcon={(
@@ -166,12 +151,12 @@ export const SideNav = (props) => {
               </SvgIcon>
             )}
             fullWidth
-            href="https://material-kit-pro-react.devias.io/"
+            href="/contact"
             sx={{ mt: 2 }}
             target="_blank"
             variant="contained"
           >
-            Pro Live Preview
+            Contact Support
           </Button>
         </Box>
       </Box>

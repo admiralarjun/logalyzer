@@ -104,7 +104,7 @@ const useChartOptions = () => {
   };
 };
 
-export const OverviewSales = (props) => {
+export const OverviewAnnualThreats = (props) => {
   const { chartSeries, sx } = props;
   const chartOptions = useChartOptions();
 
@@ -124,7 +124,7 @@ export const OverviewSales = (props) => {
             Sync
           </Button>
         )}
-        title="Sales"
+        title="Monthly Threats Trend"
       />
       <CardContent>
         <Chart
@@ -153,7 +153,7 @@ export const OverviewSales = (props) => {
   );
 };
 
-OverviewSales.protoTypes = {
+OverviewAnnualThreats.protoTypes = {
   chartSeries: PropTypes.array.isRequired,
   sx: PropTypes.object
 };

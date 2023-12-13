@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ComputerDesktopIcon from '@heroicons/react/24/solid/ComputerDesktopIcon';
-import DeviceTabletIcon from '@heroicons/react/24/solid/DeviceTabletIcon';
+import ServerStackIcon from '@heroicons/react/24/solid/ServerStackIcon';
 import PhoneIcon from '@heroicons/react/24/solid/PhoneIcon';
 import {
   Box,
@@ -68,9 +68,9 @@ const iconMap = {
       <ComputerDesktopIcon />
     </SvgIcon>
   ),
-  Tablet: (
+  Server: (
     <SvgIcon>
-      <DeviceTabletIcon />
+      <ServerStackIcon />
     </SvgIcon>
   ),
   Phone: (
@@ -80,13 +80,13 @@ const iconMap = {
   )
 };
 
-export const OverviewTraffic = (props) => {
+export const OverviewThreatTrafficSource = (props) => {
   const { chartSeries, labels, sx } = props;
   const chartOptions = useChartOptions(labels);
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Traffic Source" />
+      <CardHeader title="Threat Traffic Source" />
       <CardContent>
         <Chart
           height={300}
@@ -136,7 +136,7 @@ export const OverviewTraffic = (props) => {
   );
 };
 
-OverviewTraffic.propTypes = {
+OverviewThreatTrafficSource.propTypes = {
   chartSeries: PropTypes.array.isRequired,
   labels: PropTypes.array.isRequired,
   sx: PropTypes.object

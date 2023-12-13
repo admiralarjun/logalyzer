@@ -1,13 +1,15 @@
 import ChartBarIcon from '@heroicons/react/24/solid/ChartBarIcon';
 import CogIcon from '@heroicons/react/24/solid/CogIcon';
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon';
-import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
+import BuildingOffice2Icon from '@heroicons/react/24/solid/BuildingOffice2Icon'
 import UserIcon from '@heroicons/react/24/solid/UserIcon';
 import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
+import ShieldExclamationIcon from '@heroicons/react/24/solid/ShieldExclamationIcon'
+import BellAlertIcon from '@heroicons/react/24/solid/BellAlertIcon'
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import { SvgIcon } from '@mui/material';
-
+import PlayIcon from '@heroicons/react/24/solid/PlayIcon'
 export const items = [
   {
     title: 'Overview',
@@ -19,8 +21,26 @@ export const items = [
     )
   },
   {
-    title: 'Customers',
-    path: '/customers',
+    title: 'Threats',
+    path: '/threats',
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShieldExclamationIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Alerts',
+    path: '/alerts',
+    icon: (
+      <SvgIcon fontSize="small">
+        <BellAlertIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Users',
+    path: '/users',
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
@@ -28,11 +48,20 @@ export const items = [
     )
   },
   {
-    title: 'Companies',
-    path: '/companies',
+    title: 'CRPF Units & Devices',
+    path: '/cuds',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <BuildingOffice2Icon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Playbooks',
+    path: '/playbooks',
+    icon: (
+      <SvgIcon fontSize="small">
+        <PlayIcon />
       </SvgIcon>
     )
   },
