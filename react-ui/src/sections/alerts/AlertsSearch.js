@@ -1,12 +1,14 @@
-import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
+// src/sections/alerts/AlertsSearch.js
+import React from 'react';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
+import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 
-export const CustomersSearch = () => (
+const AlertsSearch = () => (
   <Card sx={{ p: 2 }}>
     <OutlinedInput
       defaultValue=""
       fullWidth
-      placeholder="Search customer"
+      placeholder="Search Alerts"
       startAdornment={(
         <InputAdornment position="start">
           <SvgIcon
@@ -21,3 +23,5 @@ export const CustomersSearch = () => (
     />
   </Card>
 );
+
+export { AlertsSearch };
