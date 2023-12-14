@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import CrpfUnit, CrpfDevice, ThreatInfo
+from .models import CrpfUnit, CrpfDevice, ThreatInfo, LogLines, Alerts
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,4 +22,15 @@ class CrpfDeviceSerializer(serializers.ModelSerializer):
 class ThreatInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ThreatInfo
+        fields = '__all__'
+
+class LogLinesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogLines
+        fields = '__all__'
+
+
+class AlertsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Alerts
         fields = '__all__'
