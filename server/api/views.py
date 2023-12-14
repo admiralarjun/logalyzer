@@ -44,7 +44,7 @@ def view_device_by_id(request,Id):
         return Response(device,status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-def view_all_user(request):
+def view_all_users(request):
     all_users = list(User.objects.all().values())
     return Response(all_users,status=status.HTTP_200_OK)
 
@@ -69,6 +69,38 @@ def view_all_playbooks(request):
     all_playbooks = list(Playbook.objects.all().values())
     return Response(all_playbooks, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def view_playbook_by_id(request,Id):
+    playbook = list(Playbook.objects.filter(id=Id).values())
+    if playbook == []:
+        return Response({"message":"Playbook Id not Found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(playbook,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_all_threats_info(request):
+    all_threats = list(ThreatInfo.objects.all().values())
+    return Response(all_threats, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_threat_by_id(request,Id):
+    threat = list(ThreatInfo.objects.filter(id=Id).values())
+    if threat == []:
+        return Response({"message":"Threat Id not Found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(threat,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_all_alerts(request):
+    all_alerts = list(Alerts.objects.all().values())
+    return Response(all_alerts, status=status.HTTP_200_OK)
+@api_view(['GET'])
+def view_alert_by_id(request,Id):
+    alert = list(Alerts.objects.filter(id=Id).values())
+    if alert == []:
+        return Response({"message":"User Id not Found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(alert,status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def save_log_line(request):
