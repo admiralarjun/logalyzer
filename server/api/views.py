@@ -1,5 +1,9 @@
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
+from rest_framework import status
+import re
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -91,3 +95,23 @@ def save_log_line(request):
         alert_instance.save()
     return Response({'message': 'Log line saved successfully'})
 
+
+
+@api_view(['POST'])
+# @permission_classes([IsAdminUser])
+def set_assignee(request):
+
+    alert_id = request.data.get('alert_id')
+    username = request.data.get('username')
+    try:
+        alert_instance = Alerts.objects.get(id=alert_id)
+    except Alerts.DoesNotExist:
+        return Response({'message': 'Alerts instance not found'}, status=404)
+    try:
+        assignee_user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({'message': 'User not found'}, status=404)
+    alert_instance.assignee = assignee_user
+    alert_instance.save()
+
+    return Response({'message': 'Assignee set successfully'})
