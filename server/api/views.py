@@ -1,9 +1,16 @@
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+<<<<<<< HEAD
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 import re
+=======
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+
+>>>>>>> b5e8511a21a3484f6b1d13451c9f5329ba9b75d4
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
@@ -64,6 +71,7 @@ def save_log_line(request):
         alert_instance.save()
     return Response({'message': 'Log line saved successfully'})
 
+<<<<<<< HEAD
 
 
 @api_view(['POST'])
@@ -84,3 +92,5 @@ def set_assignee(request):
     alert_instance.save()
 
     return Response({'message': 'Assignee set successfully'})
+=======
+>>>>>>> b5e8511a21a3484f6b1d13451c9f5329ba9b75d4
