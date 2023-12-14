@@ -16,7 +16,12 @@ import {
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
-
+import EnvelopeIcon from '@heroicons/react/24/solid/EnvelopeIcon';
+import CheckCircleIcon from '@heroicons/react/24/solid/CheckCircleIcon';
+import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
+import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
+import axios from 'axios';
+import { SvgIcon } from '@mui/material'
 export const UsersTable = (props) => {
   const {
     count = 0,
@@ -56,31 +61,37 @@ export const UsersTable = (props) => {
                   />
                 </TableCell>
                 <TableCell>
+                  ID
+                </TableCell>
+                <TableCell>
+                  Avatar
+                </TableCell>
+                <TableCell>
+                  Username
+                </TableCell>
+                <TableCell>
                   Name
                 </TableCell>
                 <TableCell>
                   Email
                 </TableCell>
                 <TableCell>
-                  Location
+                  Last Login
                 </TableCell>
                 <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Signed Up
+                  Status
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+              {items.map((user) => {
+                const isSelected = selected.includes(user.id);
+                const lastLogin = user.last_login ? format(new Date(user.last_login), 'dd/MM/yyyy HH:mm:ss') : 'N/A';
 
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={user.id}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
@@ -88,39 +99,47 @@ export const UsersTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.id);
+                            onSelectOne?.(user.id);
                           } else {
-                            onDeselectOne?.(customer.id);
+                            onDeselectOne?.(user.id);
                           }
                         }}
                       />
                     </TableCell>
                     <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {customer.name}
-                        </Typography>
-                      </Stack>
+                      {user.id}
                     </TableCell>
                     <TableCell>
-                      {customer.email}
+                      <Avatar src={user.avatar} alt={`Avatar-${user.id}`}>
+                        {getInitials(`${user.first_name} ${user.last_name}`)}
+                      </Avatar>
                     </TableCell>
                     <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
+                      {user.username}
                     </TableCell>
                     <TableCell>
-                      {customer.phone}
+                      {`${user.first_name} ${user.last_name}`}
                     </TableCell>
                     <TableCell>
-                      {createdAt}
+                      {user.email}
                     </TableCell>
+                    
+                    <TableCell>
+                      {lastLogin}
+                    </TableCell>
+
+                    <TableCell>
+                      {user.is_active ? (
+                        <SvgIcon fontSize='small'>
+                          <CheckCircleIcon color='green' />
+                        </SvgIcon>
+                      ) : (
+                        <SvgIcon fontSize='small'>
+                          <XCircleIcon color='gray' />
+                        </SvgIcon>
+                      )}
+                    </TableCell>
+
                   </TableRow>
                 );
               })}

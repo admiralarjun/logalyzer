@@ -1,7 +1,7 @@
 
 
 from django.contrib import admin
-from .models import CrpfUnit, CrpfDevice, ThreatInfo, LogLines, Alerts, Playbook
+from .models import *
 
 admin.site.register(CrpfUnit)
 admin.site.register(CrpfDevice)
@@ -9,3 +9,4 @@ admin.site.register(ThreatInfo)
 admin.site.register(LogLines)
 admin.site.register(Alerts)
 admin.site.register(Playbook)
+admin.site.register(Profile_pic)

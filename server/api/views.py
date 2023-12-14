@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
 from .models import *
+from .serializers import UserSerializer, ThreatInfoSerializer, CrpfDeviceSerializer, CrpfUnitSerializer, \
+    LogLinesSerializer, AlertsSerializer
 
 
 @api_view(['GET'])
@@ -44,7 +46,7 @@ def view_device_by_id(request,Id):
         return Response(device,status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-def view_all_user(request):
+def view_all_users(request):
     all_users = list(User.objects.all().values())
     return Response(all_users,status=status.HTTP_200_OK)
 
@@ -69,6 +71,38 @@ def view_all_playbooks(request):
     all_playbooks = list(Playbook.objects.all().values())
     return Response(all_playbooks, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def view_playbook_by_id(request,Id):
+    playbook = list(Playbook.objects.filter(id=Id).values())
+    if playbook == []:
+        return Response({"message":"Playbook Id not Found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(playbook,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_all_threats_info(request):
+    all_threats = list(ThreatInfo.objects.all().values())
+    return Response(all_threats, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_threat_by_id(request,Id):
+    threat = list(ThreatInfo.objects.filter(id=Id).values())
+    if threat == []:
+        return Response({"message":"Threat Id not Found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(threat,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_all_alerts(request):
+    all_alerts = list(Alerts.objects.all().values())
+    return Response(all_alerts, status=status.HTTP_200_OK)
+@api_view(['GET'])
+def view_alert_by_id(request,Id):
+    alert = list(Alerts.objects.filter(id=Id).values())
+    if alert == []:
+        return Response({"message":"User Id not Found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(alert,status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def save_log_line(request):
@@ -97,6 +131,7 @@ def save_log_line(request):
 
 
 
+
 @api_view(['POST'])
 # @permission_classes([IsAdminUser])
 def set_assignee(request):
@@ -115,3 +150,191 @@ def set_assignee(request):
     alert_instance.save()
 
     return Response({'message': 'Assignee set successfully'})
+
+
+
+
+@api_view(['POST'])
+def signup(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        user = User.objects.get(username=request.data['username'])
+        user.set_password(request.data['password'])
+        user.save()
+        token = Token.objects.create(user=user)
+        return Response({'token': token.key, 'user': serializer.data})
+    return Response(serializer.errors, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def login(request):
+    user = get_object_or_404(User, username=request.data['username'])
+    if not user.check_password(request.data['password']):
+        return Response("missing user", status=status.HTTP_404_NOT_FOUND)
+    token, created = Token.objects.get_or_create(user=user)
+    serializer = UserSerializer(user)
+    return Response({'token': token.key, 'user': serializer.data})
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def test_token(request):
+    return Response("passed!")
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    # Delete the user's token
+    request.auth.delete()
+    return Response("Successfully logged out", status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def create_crpf_unit(request):
+    serializer = CrpfUnitSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_crpf_device(request):
+    serializer = CrpfDeviceSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_threat_info(request):
+    serializer = ThreatInfoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def upload_profile_pic(request):
+    user_img = Profile_pic.objects.create()
+    user_img.name = request.data['name']
+    user_img.user_id = request.data['user_id']
+    user_img.profile_pic = request.data['profile_pic']
+    user_img.save()
+    return Response({"message":"Uploaded Successful"})
+
+@api_view(['GET'])
+def get_profile_pic(request,Id):
+    profile = list(Profile_pic.objects.filter(user_id=Id).values())
+    if profile == []:
+        return Response({"message": "User Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(profile, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_devices_by_unit(request, crpf_unit_id):
+    try:
+        devices = CrpfDevice.objects.filter(crpf_unit_id=crpf_unit_id)
+        serializer = CrpfDeviceSerializer(devices, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except CrpfDevice.DoesNotExist:
+        return Response({"message": "CRPF Unit ID not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
+def get_log_lines_by_device(request, crpf_device_id):
+    try:
+        log_lines = LogLines.objects.filter(crpf_device_id=crpf_device_id)
+        serializer = LogLinesSerializer(log_lines, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except LogLines.DoesNotExist:
+        return Response({"message": "Log lines not found for the specified device"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_log_lines_by_unit(request, crpf_unit_id):
+    try:
+        devices = CrpfDevice.objects.filter(crpf_unit_id=crpf_unit_id)
+        device_ids = devices.values_list('id', flat=True)
+        log_lines = LogLines.objects.filter(crpf_device_id__in=device_ids)
+        serializer = LogLinesSerializer(log_lines, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except CrpfDevice.DoesNotExist:
+        return Response({"message": "CRPF Unit ID not found"}, status=status.HTTP_404_NOT_FOUND)
+    except LogLines.DoesNotExist:
+        return Response({"message": "Log lines not found for the specified unit"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
+def get_alerts_by_username(request, username):
+    try:
+        user = User.objects.get(username=username)
+        alerts = Alerts.objects.filter(assignee=user)
+        serializer = AlertsSerializer(alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Alerts.DoesNotExist:
+        return Response({"message": "Alerts not found for the specified user"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_unassigned_alerts(request):
+    try:
+        unassigned_alerts = Alerts.objects.filter(assignee=None)
+        serializer = AlertsSerializer(unassigned_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No unassigned alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_unresolved_alerts(request):
+    try:
+        unresolved_alerts = Alerts.objects.filter(status='Unresolved')
+        serializer = AlertsSerializer(unresolved_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No unresolved alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_resolved_alerts(request):
+    try:
+        resolved_alerts = Alerts.objects.filter(status='Resolved')
+        serializer = AlertsSerializer(resolved_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No resolved alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_ignored_alerts(request):
+    try:
+        ignored_alerts = Alerts.objects.filter(status='Ignored')
+        serializer = AlertsSerializer(ignored_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No ignored alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_alerts_by_crpf_device(request, crpf_device_id):
+    try:
+        alerts_by_device = Alerts.objects.filter(log_line__crpf_device_id=crpf_device_id)
+        serializer = AlertsSerializer(alerts_by_device, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No alerts found for the specified CRPF device"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_alerts_by_crpf_unit(request, crpf_unit_id):
+    try:
+        alerts_by_unit = Alerts.objects.filter(log_line__crpf_unit_id=crpf_unit_id)
+        serializer = AlertsSerializer(alerts_by_unit, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No alerts found for the specified CRPF unit"}, status=status.HTTP_404_NOT_FOUND)
+
