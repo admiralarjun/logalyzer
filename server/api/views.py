@@ -215,7 +215,22 @@ def create_threat_info(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def upload_profile_pic(request):
+    user_img = Profile_pic.objects.create()
+    user_img.name = request.data['name']
+    user_img.user_id = request.data['user_id']
+    user_img.profile_pic = request.data['profile_pic']
+    user_img.save()
+    return Response({"message":"Uploaded Successful"})
 
+@api_view(['GET'])
+def get_profile_pic(request,Id):
+    profile = list(Profile_pic.objects.filter(user_id=Id).values())
+    if profile == []:
+        return Response({"message": "User Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(profile, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_devices_by_unit(request, crpf_unit_id):
@@ -322,3 +337,4 @@ def get_alerts_by_crpf_unit(request, crpf_unit_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Alerts.DoesNotExist:
         return Response({"message": "No alerts found for the specified CRPF unit"}, status=status.HTTP_404_NOT_FOUND)
+

@@ -1,5 +1,7 @@
 from django.urls import re_path,path
-
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.views import serve
 from . import views
 
 urlpatterns = [
@@ -43,7 +45,8 @@ urlpatterns = [
     path('login/', views.login),
     path('test_token/', views.test_token),
     path('logout/', views.logout),
-    
-    
-    
+    #Upload Image
+    path('upload/',views.upload_profile_pic),
+    path('profile/<int:Id>',views.get_profile_pic),
+
 ]
