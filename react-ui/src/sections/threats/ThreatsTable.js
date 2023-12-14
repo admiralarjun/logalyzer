@@ -58,10 +58,19 @@ export const ThreatsTable = (props) => {
                   Threat Name
                 </TableCell>
                 <TableCell>
+                  Threat Description
+                </TableCell>
+                <TableCell>
                   Threat Pattern
                 </TableCell>
                 <TableCell>
                   Threat Score
+                </TableCell>
+                <TableCell>
+                  Reference
+                </TableCell>
+                <TableCell>
+                  Playbook
                 </TableCell>
                 {/* Add more columns as needed */}
               </TableRow>
@@ -90,6 +99,9 @@ export const ThreatsTable = (props) => {
                     </TableCell>
                     <TableCell>
                       {threat.name}
+                    </TableCell>
+                    <TableCell>
+                      {threat.description}
                     </TableCell>
                     <TableCell>
                       {threat.pattern}
