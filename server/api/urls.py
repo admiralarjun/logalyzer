@@ -10,6 +10,7 @@ urlpatterns = [
     #CRPF Devices Urls
     path('create_crpf_device/', views.create_crpf_device, name='create_crpf_device'),
     path('viewalldevices/',views.view_all_devices,name='viewalldevices'),
+    path('get_devices_by_unit/<int:crpf_unit_id>/', views.get_devices_by_unit, name='get_devices_by_unit'),
     path('viewdevicebyid/<int:Id>',views.view_device_by_id,name='viewdevicebyid'),
     #Users Urls
     path('viewallusers/',views.view_all_users, name='viewallusers'),
@@ -25,9 +26,18 @@ urlpatterns = [
     #Alerts Urls
     path('viewallalerts/',views.view_all_alerts,name='viewallalerts'),
     path('viewalertbyid/<int:Id>', views.view_alert_by_id, name='viewtheartsbyid'),
+    path('get_alerts_by_username/<str:username>/', views.get_alerts_by_username, name='get_alerts_by_username'),
+    path('get_unassigned_alerts/', views.get_unassigned_alerts, name='get_unassigned_alerts'),
+    path('get_unresolved_alerts/', views.get_unresolved_alerts, name='get_unresolved_alerts'),
+    path('get_resolved_alerts/', views.get_resolved_alerts, name='get_resolved_alerts'),
+    path('get_ignored_alerts/', views.get_ignored_alerts, name='get_ignored_alerts'),
+    path('get_alerts_by_crpf_device/<int:crpf_device_id>', views.get_alerts_by_crpf_device, name='get_alerts_by_crpf_device'),
+    path('get_alerts_by_crpf_unit/<int:crpf_unit_id>', views.get_alerts_by_crpf_unit, name='get_alerts_by_crpf_unit'),
     path('set_assignee/', views.set_assignee, name='set_assignee'),
     #LogLine Urls
     path('save_log_line/', views.save_log_line, name='save_log_line'),
+    path('get_log_lines_by_device/<int:crpf_device_id>/', views.get_log_lines_by_device, name='get_log_lines_by_device'),
+    path('get_log_lines_by_unit/<int:crpf_unit_id>/', views.get_log_lines_by_unit, name='get_log_lines_by_unit'),
     #Authentication Urls
     path('signup/', views.signup),
     path('login/', views.login),
