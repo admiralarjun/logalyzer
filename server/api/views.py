@@ -14,7 +14,7 @@ from .models import *
 @api_view(['GET'])
 def view_all_units(request):
     all_units = list(CrpfUnit.objects.all().values())
-    return Response(all_units)
+    return Response(all_units,status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -23,13 +23,13 @@ def view_unit_by_id(request, Id):
     if unit == []:
         return Response({"message": "Unit Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response(unit)
+        return Response(unit,status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def view_all_devices(request):
     all_devices = list(CrpfDevice.objects.all().values())
-    return Response(all_devices)
+    return Response(all_devices,status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def view_device_by_id(request,Id):
@@ -37,7 +37,34 @@ def view_device_by_id(request,Id):
     if device == []:
         return Response({"message": "Device Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response(device)
+        return Response(device,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_all_user(request):
+    all_users = list(User.objects.all().values())
+    return Response(all_users,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_user_by_id(request,Id):
+    user = list(User.objects.filter(id=Id).values())
+    if user == []:
+        return Response({"message":"User Id not Found"},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(user,status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def add_playbook(request):
+    playbook = Playbook.objects.create()
+    playbook.name = request.data['name']
+    playbook.content = request.data['content']
+    playbook.save()
+    return Response({"message":"PlayBook Added Successfully"},status=status.HTTP_201_CREATED)
+    # need to write full code for admin and ass well as users
+@api_view(['GET'])
+def view_all_playbooks(request):
+    all_playbooks = list(Playbook.objects.all().values())
+    return Response(all_playbooks, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def save_log_line(request):
