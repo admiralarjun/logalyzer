@@ -187,8 +187,9 @@ def delete_playbook(request, Id):
 # Threats Views
 @api_view(['GET'])
 def view_all_threats_info(request):
-    all_threats = list(ThreatInfo.objects.all().values())
-    return Response(all_threats, status=status.HTTP_200_OK)
+    all_threats = ThreatInfo.objects.all()
+    serializer = ThreatInfoSerializer(all_threats, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
