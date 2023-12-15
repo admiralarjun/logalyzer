@@ -1,59 +1,20 @@
-// threats.js
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import Head from 'next/head';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
+import axios from 'axios';  // Import axios
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { ThreatsTable } from 'src/sections/threats/threatsTable';
-import { ThreatsSearch } from 'src/sections/threats/threatsSearch';
-import axios from 'axios';
-import { API_SERVER } from 'src/config/constant';
-import AddThreat from 'src/sections/threats/AddThreat'
+import { ThreatsTable } from 'src/sections/threats/ThreatsTable';
+import { ThreatsSearch } from 'src/sections/threats/ThreatsSearch';
 import { applyPagination } from 'src/utils/apply-pagination';
-const Page = () => {
-
-
-const threatsData = [
-  {
-    id: '1',
-    pattern: 'SQL Injection',
-    name: 'SQLi',
-    description: 'SQL Injection Attack Detected'
-  },
-  {
-    id: '2',
-    pattern: 'XSS',
-    name: 'Cross-Site Scripting',
-    description: 'XSS Attack Detected'
-  },
-  // Add more threat data as needed
-];
-
-const useThreats = (page, rowsPerPage) => {
-  return useMemo(
-    () => {
-      return applyPagination(threatsData, page, rowsPerPage);
-    },
-    [page, rowsPerPage]
-  );
-};
-
-const useThreatIds = (threats) => {
-  return useMemo(
-    () => {
-      return threats.map((threat) => threat.id);
-    },
-    [threats]
-  );
-};
 
 const ThreatsPage = () => {
->>>>>>> 6aff6a028cbcad61c83c5f4198a4c9b56a8dae85
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [threatsData, setThreatsData] = useState([]);  // State to store threats data
   const threats = useThreats(page, rowsPerPage);
   const threatIds = useThreatIds(threats);
   const threatSelection = useSelection(threatIds);
@@ -75,6 +36,19 @@ const ThreatsPage = () => {
   const handleSearch = useCallback((searchTerm) => {
     // You can implement search functionality here
     console.log(`Searching for: ${searchTerm}`);
+  }, []);
+
+  useEffect(() => {
+    const fetchThreats = async () => {
+      try {
+        const response = await axios.get(API_SERVER + 'viewallthreats');
+        setThreatsData(response.data);
+      } catch (error) {
+        console.error('Error fetching threats:', error);
+      }
+    };
+
+    fetchThreats();
   }, []);
 
   return (
@@ -104,7 +78,16 @@ const ThreatsPage = () => {
                 </Typography>
               </Stack>
               <div>
-                <AddThreat/>
+                <Button
+                  startIcon={(
+                    <SvgIcon fontSize="small">
+                      <PlusIcon />
+                    </SvgIcon>
+                  )}
+                  variant="contained"
+                >
+                  Add
+                </Button>
               </div>
             </Stack>
             <ThreatsSearch onSearch={handleSearch} />
