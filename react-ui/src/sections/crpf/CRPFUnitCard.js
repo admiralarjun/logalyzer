@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
+import PhoneIcon from '@heroicons/react/24/solid/PhoneIcon'
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from '@mui/material';
 
@@ -22,6 +22,7 @@ export const CRPFUnitCard = (props) => {
             pb: 3
           }}
         >
+          {/* Assuming you have a logo property in the new structure */}
           <Avatar
             src={unit.logo}
             variant="square"
@@ -32,13 +33,15 @@ export const CRPFUnitCard = (props) => {
           gutterBottom
           variant="h5"
         >
-          {unit.unitName}
+          {/* Change to use the name property */}
+          {unit.name}
         </Typography>
         <Typography
           align="center"
           variant="body1"
         >
-          {unit.state}
+          {/* Change to use the description property */}
+          {unit.description}
         </Typography>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
@@ -66,6 +69,7 @@ export const CRPFUnitCard = (props) => {
             display="inline"
             variant="body2"
           >
+            {/* You might want to use a property like lastUpdated */}
             Updated 2hr ago
           </Typography>
         </Stack>
@@ -78,14 +82,15 @@ export const CRPFUnitCard = (props) => {
             color="action"
             fontSize="small"
           >
-            <ArrowDownOnSquareIcon />
+            <PhoneIcon />
           </SvgIcon>
           <Typography
             color="text.secondary"
             display="inline"
             variant="body2"
           >
-            {unit.personnel} Personnel
+            {/* Change to use the personnel or any other relevant property */}
+            {unit.contact}
           </Typography>
         </Stack>
       </Stack>

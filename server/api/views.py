@@ -449,3 +449,151 @@ def logout(request):
     request.auth.delete()
     return Response("Successfully logged out", status=status.HTTP_200_OK)
 
+
+@api_view(['POST'])
+def create_crpf_unit(request):
+    serializer = CrpfUnitSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_crpf_device(request):
+    serializer = CrpfDeviceSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_threat_info(request):
+    serializer = ThreatInfoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def upload_profile_pic(request):
+    user_img = Profile_pic.objects.create()
+    user_img.name = request.data['name']
+    user_img.user_id = request.data['user_id']
+    user_img.profile_pic = request.data['profile_pic']
+    user_img.save()
+    return Response({"message":"Uploaded Successful"})
+
+@api_view(['GET'])
+def get_profile_pic(request,Id):
+    profile = list(Profile_pic.objects.filter(user_id=Id).values())
+    if profile == []:
+        return Response({"message": "User Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(profile, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_devices_by_unit(request, crpf_unit_id):
+    try:
+        devices = CrpfDevice.objects.filter(crpf_unit_id=crpf_unit_id)
+        serializer = CrpfDeviceSerializer(devices, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except CrpfDevice.DoesNotExist:
+        return Response({"message": "CRPF Unit ID not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
+def get_log_lines_by_device(request, crpf_device_id):
+    try:
+        log_lines = LogLines.objects.filter(crpf_device_id=crpf_device_id)
+        serializer = LogLinesSerializer(log_lines, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except LogLines.DoesNotExist:
+        return Response({"message": "Log lines not found for the specified device"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_log_lines_by_unit(request, crpf_unit_id):
+    try:
+        devices = CrpfDevice.objects.filter(crpf_unit_id=crpf_unit_id)
+        device_ids = devices.values_list('id', flat=True)
+        log_lines = LogLines.objects.filter(crpf_device_id__in=device_ids)
+        serializer = LogLinesSerializer(log_lines, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except CrpfDevice.DoesNotExist:
+        return Response({"message": "CRPF Unit ID not found"}, status=status.HTTP_404_NOT_FOUND)
+    except LogLines.DoesNotExist:
+        return Response({"message": "Log lines not found for the specified unit"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+@api_view(['GET'])
+def get_alerts_by_username(request, username):
+    try:
+        user = User.objects.get(username=username)
+        alerts = Alerts.objects.filter(assignee=user)
+        serializer = AlertsSerializer(alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Alerts.DoesNotExist:
+        return Response({"message": "Alerts not found for the specified user"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_unassigned_alerts(request):
+    try:
+        unassigned_alerts = Alerts.objects.filter(assignee=None)
+        serializer = AlertsSerializer(unassigned_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No unassigned alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_unresolved_alerts(request):
+    try:
+        unresolved_alerts = Alerts.objects.filter(status='Unresolved')
+        serializer = AlertsSerializer(unresolved_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No unresolved alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_resolved_alerts(request):
+    try:
+        resolved_alerts = Alerts.objects.filter(status='Resolved')
+        serializer = AlertsSerializer(resolved_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No resolved alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_ignored_alerts(request):
+    try:
+        ignored_alerts = Alerts.objects.filter(status='Ignored')
+        serializer = AlertsSerializer(ignored_alerts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No ignored alerts found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_alerts_by_crpf_device(request, crpf_device_id):
+    try:
+        alerts_by_device = Alerts.objects.filter(log_line__crpf_device_id=crpf_device_id)
+        serializer = AlertsSerializer(alerts_by_device, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No alerts found for the specified CRPF device"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_alerts_by_crpf_unit(request, crpf_unit_id):
+    try:
+        alerts_by_unit = Alerts.objects.filter(log_line__crpf_unit_id=crpf_unit_id)
+        serializer = AlertsSerializer(alerts_by_unit, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({"message": "No alerts found for the specified CRPF unit"}, status=status.HTTP_404_NOT_FOUND)
+
