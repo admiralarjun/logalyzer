@@ -19,6 +19,7 @@ class CrpfUnit(models.Model):
         return self.name
 
 
+
 class CrpfDevice(models.Model):
     id = models.AutoField(primary_key=True)
     crpf_unit = models.ForeignKey(CrpfUnit, on_delete=models.CASCADE)
@@ -41,14 +42,11 @@ class ThreatInfo(models.Model):
     description = models.TextField()
     signature = models.CharField(max_length=255)
     score = models.IntegerField()
-
-
     color = ColorField(default='#000000', verbose_name='Color')
     bgcolor = ColorField(default='#000000', verbose_name='Color')
     ref_links = models.TextField()
     playbooks = models.ManyToManyField('Playbook')
     creation_time = models.DateTimeField(default=timezone.now, editable=False)
-
     def __str__(self):
         return self.name
 
@@ -59,7 +57,6 @@ class LogLines(models.Model):
     crpf_unit = models.ForeignKey(CrpfUnit, on_delete=models.CASCADE)
     crpf_device = models.ForeignKey(CrpfDevice, on_delete=models.CASCADE)
     creation_time = models.DateTimeField(default=timezone.now, editable=False)
-
     def __str__(self):
         return f"{self.id}"
 
