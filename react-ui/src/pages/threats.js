@@ -10,6 +10,7 @@ import { ThreatsTable, threatsTable } from 'src/sections/threats/threatsTable';
 import { ThreatsSearch, threatsSearch } from 'src/sections/threats/threatsSearch';
 import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
+import AddThreat from 'src/sections/threats/AddThreat'
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -87,16 +88,7 @@ const Page = () => {
                 </Stack>
               </Stack>
               <div>
-                <Button
-                  startIcon={(
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  )}
-                  variant="contained"
-                >
-                  Add
-                </Button>
+                <AddThreat/>
               </div>
             </Stack>
             <ThreatsSearch />

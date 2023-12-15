@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import { SvgIcon } from '@mui/material';
+import BookOpenIcon from '@heroicons/react/24/solid/BookOpenIcon'
+
 import {
   Avatar,
   Box,
@@ -97,7 +100,9 @@ export const ThreatsTable = (props) => {
                     <TableCell>{threat.signature}</TableCell>
                     <TableCell>{threat.score}</TableCell>
                     <TableCell>{threat.ref_links}</TableCell>
-                    <TableCell>{threat.creation_time}</TableCell>
+                    <TableCell>
+                      {threat.playbooks}
+                    </TableCell>
                   </TableRow>
                 );
               })}

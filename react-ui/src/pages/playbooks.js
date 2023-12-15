@@ -14,9 +14,9 @@ import {
   Unstable_Grid2 as Grid
 } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { CRPFUnitCard } from 'src/sections/crpf/CRPFUnitCard'; // Assuming you'll create this component
-import { CRPFUnitsSearch } from 'src/sections/crpf/CRPFUnitsSearch'; // Create this component as well
 
+import { PlaybookCard } from 'src/sections/playbook/PlaybookCard';
+import { PlaybookSearch } from 'src/sections/playbook/PlaybookSearch';
 const crpfUnits = [
   {
     id: '1',
@@ -32,7 +32,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        CRPF Units | Logalyzer
+        Playbooks | Logalyzer
       </title>
     </Head>
     <Box
@@ -51,7 +51,7 @@ const Page = () => (
           >
             <Stack spacing={1}>
               <Typography variant="h4">
-                CRPF Units
+                Playbooks
               </Typography>
               <Stack
                 alignItems="center"
@@ -93,7 +93,7 @@ const Page = () => (
               </Button>
             </div>
           </Stack>
-          <CRPFUnitsSearch />
+          <PlaybookSearch />
           <Grid
             container
             spacing={3}
@@ -105,7 +105,7 @@ const Page = () => (
                 lg={4}
                 key={unit.id}
               >
-                <CRPFUnitCard unit={unit} />
+                <PlaybookCard unit={unit} />
               </Grid>
             ))}
           </Grid>
