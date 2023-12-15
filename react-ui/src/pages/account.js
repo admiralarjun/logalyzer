@@ -3,8 +3,19 @@ import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { AccountProfile } from 'src/sections/account/account-profile';
 import { AccountProfileDetails } from 'src/sections/account/account-profile-details';
+import { useEffect } from 'react';
+
+
+  let user = null
+  if (typeof window !== "undefined") {
+    user = JSON.parse(window.sessionStorage.getItem('user_details'));
+    console.log(window.innerWidth)
+ }
+
+
 
 const Page = () => (
+  
   <>
     <Head>
       <title>
@@ -35,7 +46,7 @@ const Page = () => (
                 md={6}
                 lg={4}
               >
-                <AccountProfile />
+                <AccountProfile user={user}/>
               </Grid>
               <Grid
                 xs={12}

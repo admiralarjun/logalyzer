@@ -8,17 +8,11 @@ import {
   Divider,
   Typography
 } from '@mui/material';
+import { useEffect } from 'react';
 
-const user = {
-  avatar: '/assets/avatars/avatar-anika-visser.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Anika Visser',
-  timezone: 'GTM-7'
-};
 
-export const AccountProfile = () => (
+export const AccountProfile = ({user}) => (
+  
   <Card>
     <CardContent>
       <Box
@@ -40,7 +34,7 @@ export const AccountProfile = () => (
           gutterBottom
           variant="h5"
         >
-          {user.name}
+          {user.username}
         </Typography>
         <Typography
           color="text.secondary"
