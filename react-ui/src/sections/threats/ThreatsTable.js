@@ -100,7 +100,6 @@ export const ThreatsTable = (props) => {
                         }}
                       />
                     </TableCell>
-<<<<<<< HEAD
                     <TableCell>{threat.name}</TableCell>
                     <TableCell>{threat.description}</TableCell>
                     <TableCell>{threat.signature}</TableCell>
@@ -109,21 +108,6 @@ export const ThreatsTable = (props) => {
                     <TableCell>
                       {threat.playbooks}
                     </TableCell>
-=======
-                    <TableCell>
-                      {threat.name}
-                    </TableCell>
-                    <TableCell>
-                      {threat.description}
-                    </TableCell>
-                    <TableCell>
-                      {threat.pattern}
-                    </TableCell>
-                    <TableCell>
-                      {threat.score}
-                    </TableCell>
-                    {/* Add more cells as needed */}
->>>>>>> 6aff6a028cbcad61c83c5f4198a4c9b56a8dae85
                   </TableRow>
                 );
               })}
