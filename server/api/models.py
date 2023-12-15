@@ -14,6 +14,7 @@ class CrpfUnit(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     creation_time = models.DateTimeField(default=timezone.now, editable=False)
     unit_image = models.FileField(blank=False, upload_to="crpf_unit_pictures/", null=True)
+    mail_address = models.EmailField(default=False)
 
     def __str__(self):
         return self.name
@@ -95,5 +96,18 @@ class Profile_pic(models.Model):
     name = models.CharField(max_length=200)
     profile_pic = models.FileField(blank=False, upload_to="profile_pictures/", null=True)
     created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return str(self.name)
+
+class Crpf_Device_Agent_Repo(models.Model):
+    id = models.AutoField(primary_key=True)
+    crpf_device_id = models.ForeignKey(CrpfDevice, on_delete=models.CASCADE)
+    access_key = models.TextField()
+    code = models.TextField()
+    version = models.TextField()
+
+    def __str__(self):
+        return str(self.crpf_device_id)
 
 
