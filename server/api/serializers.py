@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import CrpfUnit, CrpfDevice, ThreatInfo, LogLines, Alerts
+from .models import CrpfUnit, CrpfDevice, ThreatInfo, LogLines, Alerts, Playbook
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -33,4 +33,17 @@ class LogLinesSerializer(serializers.ModelSerializer):
 class AlertsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Alerts
+        fields = '__all__'
+
+
+class PlaybookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playbook
+        fields = ['id', 'name', 'content', 'creation_time', 'status']
+        read_only_fields = ['id', 'creation_time']
+
+
+class LogLineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogLines
         fields = '__all__'
