@@ -17,6 +17,8 @@ import {
   Typography
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
+import { getInitials } from 'src/utils/get-initials';
+
 export const ThreatsTable = (props) => {
   const {
     count = 0,
@@ -34,7 +36,6 @@ export const ThreatsTable = (props) => {
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
-
 
   return (
     <Card>
@@ -82,7 +83,11 @@ export const ThreatsTable = (props) => {
                 const isSelected = selected.includes(threat.id);
 
                 return (
-                  <TableRow hover key={threat.id} selected={isSelected}>
+                  <TableRow
+                    hover
+                    key={threat.id}
+                    selected={isSelected}
+                  >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
@@ -95,6 +100,7 @@ export const ThreatsTable = (props) => {
                         }}
                       />
                     </TableCell>
+<<<<<<< HEAD
                     <TableCell>{threat.name}</TableCell>
                     <TableCell>{threat.description}</TableCell>
                     <TableCell>{threat.signature}</TableCell>
@@ -103,6 +109,21 @@ export const ThreatsTable = (props) => {
                     <TableCell>
                       {threat.playbooks}
                     </TableCell>
+=======
+                    <TableCell>
+                      {threat.name}
+                    </TableCell>
+                    <TableCell>
+                      {threat.description}
+                    </TableCell>
+                    <TableCell>
+                      {threat.pattern}
+                    </TableCell>
+                    <TableCell>
+                      {threat.score}
+                    </TableCell>
+                    {/* Add more cells as needed */}
+>>>>>>> 6aff6a028cbcad61c83c5f4198a4c9b56a8dae85
                   </TableRow>
                 );
               })}
