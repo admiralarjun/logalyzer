@@ -106,7 +106,6 @@ class Crpf_Device_Agent_Repo(models.Model):
     access_key = models.TextField()
     code = models.TextField()
     version = models.TextField()
-
     def __str__(self):
         return str(self.crpf_device_id)
 
