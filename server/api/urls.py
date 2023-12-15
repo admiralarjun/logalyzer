@@ -26,13 +26,13 @@ urlpatterns = [
     #Playbook Urls
     path('add_playbook/',views.add_playbook,name='addplaybook'),
     path('view_all_playbooks/',views.view_all_playbooks,name='viewallplaybooks'),
-    path('view_playbook_by_id/<int:Id>',views.view_playbook_by_id,name='viewplaybookbyid'),
+    path('view_playbook_by_id/<int:Id>/',views.view_playbook_by_id,name='viewplaybookbyid'),
     path('update_playbook/<int:Id>/', views.update_playbook, name='update_playbook'),
     path('delete_playbook/<int:Id>/', views.delete_playbook, name='delete_playbook'),
     #Threats Urls
     path('create_threat_info/', views.create_threat_info, name='create_threat_info'),
     path('view_all_threats/',views.view_all_threats_info,name='viewallthreats'),
-    path('view_threat_by_id/<int:Id>',views.view_threat_by_id,name='viewthreatbyid'),
+    path('view_threat_by_id/<int:Id>/',views.view_threat_by_id,name='viewthreatbyid'),
     path('update_threat_info/<int:Id>/', views.update_threat_info, name='update_threat_info'),
     path('delete_threat_info/<int:Id>/', views.delete_threat_info, name='delete_threat_info'),
     #Alerts Urls
