@@ -21,7 +21,8 @@ from rest_framework.authtoken.models import Token
 
 from .models import *
 from .serializers import UserSerializer, ThreatInfoSerializer, CrpfDeviceSerializer, CrpfUnitSerializer, \
-    LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer
+    LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer, ProfilePicSerializer
+
 
 # CRPF Units Views
 @api_view(['GET'])
@@ -112,16 +113,18 @@ def delete_crpf_device(request, Id):
 # Users Views
 @api_view(['GET'])
 def view_all_users(request):
-    all_users = list(User.objects.all().values())
-    return Response(all_users, status=status.HTTP_200_OK)
+    all_users = User.objects.all()
+    serializer = UserSerializer(all_users, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def view_user_by_id(request, Id):
-    user = list(User.objects.filter(id=Id).values())
-    if user == []:
-        return Response({"message": "User Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(user, status=status.HTTP_200_OK)
+    try:
+        user = User.objects.get(id=Id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"message": "User Id not Found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -155,24 +158,26 @@ def delete_user(request, Id):
 # Playbook Views
 @api_view(['POST'])
 def add_playbook(request):
-    playbook = Playbook.objects.create()
-    playbook.name = request.data['name']
-    playbook.content = request.data['content']
-    playbook.save()
-    return Response({"message": "PlayBook Added Successfully"}, status=status.HTTP_201_CREATED)
+    serializer = PlaybookSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def view_all_playbooks(request):
-    all_playbooks = list(Playbook.objects.all().values())
-    return Response(all_playbooks, status=status.HTTP_200_OK)
+    all_playbooks = Playbook.objects.all()
+    serializer = PlaybookSerializer(all_playbooks, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def view_playbook_by_id(request, Id):
-    playbook = list(Playbook.objects.filter(id=Id).values())
-    if playbook == []:
-        return Response({"message": "Playbook Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(playbook, status=status.HTTP_200_OK)
+    try:
+        playbook = Playbook.objects.get(id=Id)
+        serializer = PlaybookSerializer(playbook)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Playbook.DoesNotExist:
+        return Response({"message": "Playbook Id not Found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -202,11 +207,12 @@ def view_all_threats_info(request):
 
 @api_view(['GET'])
 def view_threat_by_id(request, Id):
-    threat = list(ThreatInfo.objects.filter(id=Id).values())
-    if threat == []:
-        return Response({"message": "Threat Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(threat, status=status.HTTP_200_OK)
+    try:
+        threat = ThreatInfo.objects.get(id=Id)
+        serializer = ThreatInfoSerializer(threat)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except ThreatInfo.DoesNotExist:
+        return Response({"message": "Threat Id not Found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -238,8 +244,9 @@ def delete_threat_info(request, Id):
 # Alerts Views
 @api_view(['GET'])
 def view_all_alerts(request):
-    all_alerts = list(Alerts.objects.all().values())
-    return Response(all_alerts, status=status.HTTP_200_OK)
+    all_alerts = Alerts.objects.all()
+    serializer = AlertsSerializer(all_alerts, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_alerts_by_username(request, username):
@@ -256,12 +263,9 @@ def get_alerts_by_username(request, username):
 
 @api_view(['GET'])
 def view_alert_by_id(request, Id):
-    alert = list(Alerts.objects.filter(id=Id).values())
-    if alert == []:
-        return Response({"message": "Alert Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(alert, status=status.HTTP_200_OK)
-
+    alert = get_object_or_404(Alerts, id=Id)
+    serializer = AlertsSerializer(alert)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 @api_view(['GET'])
 def get_unassigned_alerts(request):
     try:
@@ -410,8 +414,6 @@ def get_log_lines_by_unit(request, crpf_unit_id):
         return Response({"message": "CRPF Unit ID not found"}, status=status.HTTP_404_NOT_FOUND)
     except LogLines.DoesNotExist:
         return Response({"message": "Log lines not found for the specified unit"}, status=status.HTTP_404_NOT_FOUND)
-
-
 @api_view(['POST'])
 def update_log_line(request, Id):
     log_line = get_object_or_404(LogLines, id=Id)
@@ -504,12 +506,13 @@ def upload_profile_pic(request):
     return Response({"message":"Uploaded Successful"})
 
 @api_view(['GET'])
-def get_profile_pic(request,Id):
-    profile = list(Profile_pic.objects.filter(user_id=Id).values())
-    if profile == []:
-        return Response({"message": "User Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(profile, status=status.HTTP_200_OK)
+def get_profile_pic(request, Id):
+    try:
+        profile_pic = Profile_pic.objects.get(user_id=Id)
+        serializer = ProfilePicSerializer(profile_pic)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Profile_pic.DoesNotExist:
+        return Response({"message": "User Id not Found"}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET'])
 def get_devices_by_unit(request, crpf_unit_id):
