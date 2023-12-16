@@ -1,9 +1,19 @@
+from datetime import timedelta
+
+from dateutil.relativedelta import relativedelta
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
+from django.http import JsonResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
+<<<<<<< HEAD
 from django.db.models import F
+=======
+import calendar
+>>>>>>> c9b5a00363f8769858e0cbf6e8cd589438600dc0
 import re
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -348,13 +358,22 @@ def delete_alert(request, Id):
 # LogLine Views
 @api_view(['POST'])
 def save_log_line(request):
-    crpf_device_name = request.data.get('crpf_device_name')
-    line_of_text = request.data.get('line_of_text')
+    access_key = request.data.get('access_key')
+    line_of_text = request.data.get('log_line')
+
     try:
-        crpf_device = CrpfDevice.objects.get(device_name=crpf_device_name)
-    except CrpfDevice.DoesNotExist:
-        return Response({'message': 'CrpfDevice not found'}, status=404)
-    log_line = LogLines(content=line_of_text, crpf_device=crpf_device, crpf_unit=crpf_device.crpf_unit)
+        crpf_device_agent_repo = Crpf_Device_Agent_Repo.objects.get(access_key=access_key)
+    except Crpf_Device_Agent_Repo.DoesNotExist:
+        return Response({'message': 'Crpf_Device_Agent_Repo not found for the given access key'}, status=404)
+
+    log_line = LogLines(
+        content=line_of_text,
+        threat=None,  # You might want to set the threat based on your logic
+        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
+        crpf_device=crpf_device_agent_repo.crpf_device_id,
+    )
+    print(line_of_text)
+
     threats = ThreatInfo.objects.all()
     x = False
     for threat in threats:
@@ -363,12 +382,14 @@ def save_log_line(request):
             log_line.threat = threat
             x = True
     log_line.save()
+
     if x:
         alert_instance = Alerts(
             log_line=log_line,
             status='Unresolved',
         )
         alert_instance.save()
+
     return Response({'message': 'Log line saved successfully'}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
@@ -628,3 +649,80 @@ def get_full_alert_details(request):
     # Display the result
     print(alert_details)
     return Response(alert_details)
+
+@api_view(['GET'])
+def get_alerts_stats_by_crpf_unit(request, crpf_unit_id):
+    try:
+        today = timezone.now().date()
+        thirteen_months_ago = today - timedelta(days=365)
+
+        stats = []
+
+        for i in range(13):
+            if i!=0:
+                start_date = thirteen_months_ago + timedelta(days=i*30)
+                _, last_day_of_month = calendar.monthrange(start_date.year, start_date.month)
+                end_date = start_date.replace(day=last_day_of_month)
+
+                alerts_by_unit = Alerts.objects.filter(
+                    log_line__crpf_unit_id=crpf_unit_id,
+                    creation_time__gte=start_date,
+                    creation_time__lt=end_date + timedelta(days=1)  # Adding one day to include the whole last day
+                )
+
+                resolved_alerts = alerts_by_unit.filter(status='Resolved')
+
+                stats.append({
+                    'month': start_date.strftime('%B'),
+                    'year': start_date.year,
+                    'total_alerts': alerts_by_unit.count(),
+                    'resolved_alerts': resolved_alerts.count()
+                })
+
+        return Response({
+            "message": "Alerts statistics fetched successfully",
+            "data": stats
+        }, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({
+            "message": "No alerts found for the specified CRPF unit",
+            "data": []
+        }, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def get_alerts_stats_all_units(request):
+    try:
+        today = timezone.now().date()
+        twelve_months_ago = today - timedelta(days=365)
+
+        stats = []
+
+        for i in range(13):
+            if i!=0:
+                start_date = twelve_months_ago + timedelta(days=i*30)
+                end_date = start_date + timedelta(days=30)
+
+                alerts_all_units = Alerts.objects.filter(
+                    creation_time__gte=start_date,
+                    creation_time__lt=end_date + timedelta(days=1)  # Adding one day to include the whole last day
+                )
+
+                resolved_alerts_all_units = alerts_all_units.filter(status='Resolved')
+
+                stats.append({
+                    'month': start_date.strftime('%B'),
+                    'year': start_date.year,
+                    'total_alerts': alerts_all_units.count(),
+                    'resolved_alerts': resolved_alerts_all_units.count()
+                })
+
+        return Response({
+            "message": "Combined alerts statistics fetched successfully",
+            "data": stats
+        }, status=status.HTTP_200_OK)
+    except Alerts.DoesNotExist:
+        return Response({
+            "message": "No alerts found for any CRPF unit",
+            "data": []
+        }, status=status.HTTP_404_NOT_FOUND)
