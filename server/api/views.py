@@ -620,7 +620,10 @@ def get_alerts_by_crpf_unit(request, crpf_unit_id):
 
 @api_view(['GET'])
 def get_full_alert_details(request):
-    alert_details = Alerts.objects.all().select_related(
+    alert_id = 4
+
+    # Fetch all details for the given alert ID
+    alert_details = Alerts.objects.filter(id=alert_id).select_related(
         'log_line__crpf_unit',  # Select related CrpfUnit for LogLines
         'log_line__crpf_device',  # Select related CrpfDevice for LogLines
         'log_line__threat',  # Select related ThreatInfo for LogLines
@@ -638,9 +641,11 @@ def get_full_alert_details(request):
         'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id',
         'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic',
         'creation_time', 'update_time'
-    )
-    alert_details_list = list(alert_details)
-    return Response(alert_details_list,status=status.HTTP_200_OK)
+    ).first()
+
+    # Display the result
+    print(alert_details)
+    return Response(alert_details)
 
 @api_view(['GET'])
 def get_alerts_stats_by_crpf_unit(request, crpf_unit_id):
