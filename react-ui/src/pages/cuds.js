@@ -18,6 +18,7 @@ import { CRPFUnitCard } from 'src/sections/crpf/CRPFUnitCard';
 import { CRPFUnitsSearch } from 'src/sections/crpf/CRPFUnitsSearch';
 import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
+
 const Page = () => {
   const [crpfUnits, setCRPFUnits] = useState([]);
 
@@ -95,7 +96,7 @@ const Page = () => {
             <Grid container spacing={3}>
               {crpfUnits.map((unit) => (
                 <Grid xs={12} md={6} lg={4} key={unit.id}>
-                  <CRPFUnitCard unit={unit} />
+                    <CRPFUnitCard unit={unit}/>
                 </Grid>
               ))}
             </Grid>
