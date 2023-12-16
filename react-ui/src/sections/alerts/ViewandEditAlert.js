@@ -18,6 +18,8 @@ import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
 import { fetchPlaybooks } from 'src/utils/fetchPlaybooks';
 import SettingsApplicationsSharpIcon from '@mui/icons-material/SettingsApplicationsSharp';
+import Grid from '@mui/material/Grid';
+
 
 const ColorPicker = ({ value, onChange }) => (
   <TextField
@@ -45,6 +47,7 @@ export default function ViewandEditAlert(props) {
   const[crpfdeviceData,setcrpfdeviceData] = useState([]);
   const[threatData,setthreatData] = useState([]);
   const[loglinedata,setloglinedata] = useState([]);
+  const[usersdata,setusersdata] = useState([]);
 
   const handleClose = () => {
     setOpen(false);
@@ -67,12 +70,14 @@ export default function ViewandEditAlert(props) {
                 crpfDeviceResponse,
                 ThreatResponse,
                 LoglineResponse,
+                UserDataResponse,
               ] = await Promise.all([
                 axios.get(API_SERVER + `view_alert_by_id/${props.alert_id}`),
                 axios.get(API_SERVER + `view_unit_by_id/${props.crpf_unit_id}`),
                 axios.get(API_SERVER + `view_device_by_id/${props.crpf_device_id}`),
                 axios.get(API_SERVER + `view_threat_by_id/${props.threat_signature_id}`),
                 axios.get(API_SERVER + `view_log_line_by_id/${props.log_line}`),
+                axios.get(API_SERVER+ `view_all_users`),
               ]);
         
               setalertData(alertResponse.data);
@@ -89,7 +94,10 @@ export default function ViewandEditAlert(props) {
               console.log("Threat Response", threatData);
         
               setloglinedata(LoglineResponse.data);
-              console.log("logline data", loglinedata);
+            
+              setusersdata(UserDataResponse.data);
+
+
             } catch (error) {
               console.error("Error fetching data:", error);
             }
@@ -100,82 +108,159 @@ export default function ViewandEditAlert(props) {
      <SettingsApplicationsSharpIcon sx={{ color: 'black' }}/>
       </Button>
       <Modal open={open} onClose={handleClose}>
-        <Box
+      <Box
           sx={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: '60vw',
+            maxHeight: '80vh',
+            overflow: 'scroll',
             bgcolor: 'white',
             borderRadius: '8px',
             boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
             p: 4,
           }}
         >
-          <Typography variant="h6" component="div" gutterBottom>
-            Create threat
+          <div style={{ textAlign: 'center', margin: 'auto' }}>
+          <Grid container spacing={2} justifyContent="center" alignItems="center" justifySelf="center">
+            <Grid item xs={12}>
+              <Typography variant="h6" component="div" gutterBottom>
+                Alert Details
+              </Typography>
+              <Typography variant="body1" color="text.secondary" gutterBottom>
+                Attack Performed: {threatData.name}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={6} style={{ textAlign: 'left',paddingLeft:"2rem"  }} >
+              <Typography variant="h6" component="div" gutterBottom style={{ textAlign: 'center',padding: "1rem" }}>
+                Affected Unit/Device Details
+              </Typography>
+              <Typography variant="body1" color="text.secondary" gutterBottom>
+            Unit Name: {crpfunitData.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            Fill in the information of the threat. {props.name}
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Unit Description: {crpfunitData.description}
           </Typography>
-          <form onSubmit={handleSubmit}>
-            <Stack spacing={2}>
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input autoFocus required value={name} onChange={(e) => setName(e.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Description</FormLabel>
-                <Input required value={description} onChange={(e) => setDescription(e.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Signature</FormLabel>
-                <Input required value={signature} onChange={(e) => setSignature(e.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Score</FormLabel>
-                <Input type="number" required value={score} onChange={(e) => setScore(e.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Color</FormLabel>
-                <ColorPicker value={color} onChange={setColor} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Background Color</FormLabel>
-                <ColorPicker value={bgColor} onChange={setBgColor} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Reference Link</FormLabel>
-                <Input required value={ref_links} onChange={(e) => setRefLinks(e.target.value)} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Playbook</FormLabel>
-                <Select
-                  label="Playbook"
-                  value={selectedPlaybooks}
-                  onChange={(e) => setSelectedPlaybooks(e.target.value)}
-                  multiple
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                      {selected.map((pb) => (
-                        <Chip key={pb.id} label={pb.name} sx={{ margin: '2px' }} />
-                      ))}
-                    </Box>
-                  )}
-                >
-                  {playbooks.map((pb) => (
-                    <MenuItem key={pb.id} value={pb}>
-                      {pb.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <Button type="submit" variant="contained" color="primary">
-                Submit
-              </Button>
-            </Stack>
-          </form>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Unit Location: {crpfunitData.location}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Unit Contact Info: {crpfunitData.contact}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Unit Latitude: {crpfunitData.latitude}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Unit Longitude: {crpfunitData.longitude}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Unit Mail Address: {crpfunitData.mail_address}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Device Name: {crpfdeviceData.device_name}
+          </Typography> 
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Device Type: {crpfdeviceData.device_type}
+          </Typography>
+         
+            </Grid>
+
+            <Grid item xs={12} sm={6} justifyContent="center" alignItems="center">
+              <Typography variant="h6" component="div" gutterBottom>
+                Location
+              </Typography>
+              <img src={`http://localhost:8000/${crpfunitData.unit_image}`}
+               alt="Unit Location"
+               style={{ width: '20rem', height: 'auto', maxWidth: '100%' }}
+              ></img>
+            </Grid>
+
+            {/* <Grid item xs={12}>
+              <Typography variant="h6" component="div" gutterBottom>
+                Log Details
+              </Typography>
+             <Typography variant="body1" color="text.secondary" gutterBottom>
+            Log Content: {loglinedata.content}
+          </Typography> 
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Log Created At: {loglinedata.creation_time}
+          </Typography>
+            </Grid> */}
+
+            <Grid item xs={12} sm={6} style={{ textAlign: 'left',paddingLeft:"2rem" }}>
+              <Typography variant="h6" component="div" gutterBottom style={{ textAlign: 'center',padding: "1rem" }}>
+                Threat Signature Details
+              </Typography>
+              <Typography variant="body1" color="text.secondary" gutterBottom>
+            Threat Name: {threatData.name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Threat Description: {threatData.description}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Threat Signature: {threatData.signature}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Threat Score: {threatData.score}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Threat Reference Links: {threatData.ref_links}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            PlayBooks Related to the threat: {threatData.playbooks}
+          </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <form onSubmit={handleSubmit}>
+                <Typography variant="h6" component="div" gutterBottom padding={2}>
+                  Update Alert Details
+                </Typography>
+                <Grid container spacing={1}>
+                  <Grid item xs={12} xl={6}>
+                    <FormControl>
+                      <FormLabel>Status</FormLabel>
+                      <Select
+                        label="Status"
+                        value={alertData.status}
+                        onChange={(e) => setDescription(e.target.value)}
+                      >
+                        <MenuItem value="Resolved">Resolved</MenuItem>
+                        <MenuItem value="Unresolved">Unresolved</MenuItem>
+                        <MenuItem value="Ignored">Ignored</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} xl={6}>
+                  <FormControl fullWidth>
+                  <FormLabel id="user-select-label">Select User</FormLabel>
+                  <Select
+                    labelId="user-select-label"
+                    id="user-select"
+                    // value={selectedUser}
+                    // onChange={handleSelectChange}
+                  >
+                    {usersdata.map((user) => (
+                      <MenuItem key={user.id} value={user.id}>
+                        {user.username}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button type="submit" variant="contained" color="primary">
+                      Submit
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
+            </Grid>
+          </Grid>
+          </div>
         </Box>
       </Modal>
     </>
