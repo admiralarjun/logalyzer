@@ -9,6 +9,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.models import F
 import calendar
 import re
 from rest_framework.permissions import IsAuthenticated
@@ -616,6 +617,35 @@ def get_alerts_by_crpf_unit(request, crpf_unit_id):
     except Alerts.DoesNotExist:
         return Response({"message": "No alerts found for the specified CRPF unit"}, status=status.HTTP_404_NOT_FOUND)
 
+
+@api_view(['GET'])
+def get_full_alert_details(request):
+    alert_id = 4
+
+    # Fetch all details for the given alert ID
+    alert_details = Alerts.objects.filter(id=alert_id).select_related(
+        'log_line__crpf_unit',  # Select related CrpfUnit for LogLines
+        'log_line__crpf_device',  # Select related CrpfDevice for LogLines
+        'log_line__threat',  # Select related ThreatInfo for LogLines
+        'assignee',  # Select related User for Assignee
+        'assignee__profile_pic',  # Select related Profile_pic for User
+    ).annotate(
+        crpf_unit_name=F('log_line__crpf_unit__name'),
+        crpf_unit_id =F('log_line__crpf_unit__id'),
+        crpf_device_name=F('log_line__crpf_device__device_name'),
+        crpf_device_id=F('log_line__crpf_device__id'),
+        threat_signature_name=F('log_line__threat__name'),
+        threat_signature_id=F('log_line__threat__id'),
+        user_profile_pic=F('assignee__profile_pic__profile_pic'),
+    ).values(
+        'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id',
+        'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic',
+        'creation_time', 'update_time'
+    ).first()
+
+    # Display the result
+    print(alert_details)
+    return Response(alert_details)
 
 @api_view(['GET'])
 def get_alerts_stats_by_crpf_unit(request, crpf_unit_id):
