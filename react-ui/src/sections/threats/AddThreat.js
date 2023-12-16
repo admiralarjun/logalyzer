@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
@@ -9,8 +9,15 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Chip from '@mui/material/Chip';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { API_SERVER } from 'src/config/constant';
+import { fetchPlaybooks } from 'src/utils/fetchPlaybooks';
 
-// Placeholder for ColorPicker, replace with the official MUI ColorPicker if available
 const ColorPicker = ({ value, onChange }) => (
   <TextField
     type="color"
@@ -22,20 +29,67 @@ const ColorPicker = ({ value, onChange }) => (
 
 export default function ModernModalDialog() {
   const [open, setOpen] = useState(false);
-  const [color, setColor] = useState('#000000'); // Default color
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [signature, setSignature] = useState('');
+  const [score, setScore] = useState(0);
+  const [color, setColor] = useState('#000000');
+  const [bgColor, setBgColor] = useState('#000000');
+  const [ref_links, setRefLinks] = useState('');
+  const [selectedPlaybooks, setSelectedPlaybooks] = useState([]);
+  const [playbooks, setPlaybooks] = useState([]);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Add your form submission logic here
-    setOpen(false);
+
+    const threatData = {
+      name,
+      description,
+      signature,
+      score,
+      color,
+      bgColor,
+      ref_links,
+      playbooks: selectedPlaybooks.map((pb) => pb.id),
+    };
+
+    console.log('Payload:', threatData);
+    try {
+      const response = await axios.post(API_SERVER + 'create_threat_info/', threatData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('Response:', response);
+
+      if (response.status === 201) {
+        toast.success('Threat created successfully!', { position: toast.POSITION.TOP_RIGHT });
+        setOpen(false);
+      } else {
+        toast.error('Error creating threat. Please try again.', { position: toast.POSITION.TOP_RIGHT });
+      }
+    } catch (error) {
+      console.error('Error creating threat:', error);
+      toast.error('Error creating threat. Please try again.', { position: toast.POSITION.TOP_RIGHT });
+    }
   };
+
+  useEffect(() => {
+    (async () => {
+      const fetchedPlaybooks = await fetchPlaybooks();
+      setPlaybooks(fetchedPlaybooks);
+    })();
+  }, []);
 
   return (
     <>
+    <ToastContainer />
+
       <Button
         variant="contained"
         color="primary"
@@ -68,19 +122,19 @@ export default function ModernModalDialog() {
             <Stack spacing={2}>
               <FormControl>
                 <FormLabel>Name</FormLabel>
-                <Input autoFocus required />
+                <Input autoFocus required value={name} onChange={(e) => setName(e.target.value)} />
               </FormControl>
               <FormControl>
                 <FormLabel>Description</FormLabel>
-                <Input required />
+                <Input required value={description} onChange={(e) => setDescription(e.target.value)} />
               </FormControl>
               <FormControl>
                 <FormLabel>Signature</FormLabel>
-                <Input required />
+                <Input required value={signature} onChange={(e) => setSignature(e.target.value)} />
               </FormControl>
               <FormControl>
                 <FormLabel>Score</FormLabel>
-                <Input type="number" required />
+                <Input type="number" required value={score} onChange={(e) => setScore(e.target.value)} />
               </FormControl>
               <FormControl>
                 <FormLabel>Color</FormLabel>
@@ -88,15 +142,33 @@ export default function ModernModalDialog() {
               </FormControl>
               <FormControl>
                 <FormLabel>Background Color</FormLabel>
-                <ColorPicker value={color} onChange={setColor} />
+                <ColorPicker value={bgColor} onChange={setBgColor} />
               </FormControl>
               <FormControl>
                 <FormLabel>Reference Link</FormLabel>
-                <Input required />
+                <Input required value={ref_links} onChange={(e) => setRefLinks(e.target.value)} />
               </FormControl>
               <FormControl>
                 <FormLabel>Playbook</FormLabel>
-                <Input required />
+                <Select
+                  label="Playbook"
+                  value={selectedPlaybooks}
+                  onChange={(e) => setSelectedPlaybooks(e.target.value)}
+                  multiple
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                      {selected.map((pb) => (
+                        <Chip key={pb.id} label={pb.name} sx={{ margin: '2px' }} />
+                      ))}
+                    </Box>
+                  )}
+                >
+                  {playbooks.map((pb) => (
+                    <MenuItem key={pb.id} value={pb}>
+                      {pb.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
               <Button type="submit" variant="contained" color="primary">
                 Submit
