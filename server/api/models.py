@@ -103,7 +103,7 @@ class Profile_pic(models.Model):
 class Crpf_Device_Agent_Repo(models.Model):
     id = models.AutoField(primary_key=True)
     crpf_device_id = models.ForeignKey(CrpfDevice, on_delete=models.CASCADE)
-    access_key = models.TextField()
+    access_key = models.TextField(unique=True)
     code = models.TextField()
     version = models.TextField()
 
