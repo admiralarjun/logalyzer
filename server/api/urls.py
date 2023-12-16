@@ -45,6 +45,8 @@ urlpatterns = [
     path('get_ignored_alerts/', views.get_ignored_alerts, name='get_ignored_alerts'),
     path('get_alerts_by_crpf_device/<int:crpf_device_id>', views.get_alerts_by_crpf_device, name='get_alerts_by_crpf_device'),
     path('get_alerts_by_crpf_unit/<int:crpf_unit_id>', views.get_alerts_by_crpf_unit, name='get_alerts_by_crpf_unit'),
+    path('get_alerts_stats_by_crpf_unit/<int:crpf_unit_id>/', views.get_alerts_stats_by_crpf_unit,name='get_alerts_stats_by_crpf_unit'),
+    path('get_alerts_stats_all_units/', views.get_alerts_stats_all_units, name='get_alerts_stats_all_units'),
     path('set_assignee/', views.set_assignee, name='set_assignee'),
     path('update_alert/<int:Id>/', views.update_alert, name='update_alert'),
     path('delete_alert/<int:Id>/', views.delete_alert, name='delete_alert'),
@@ -62,4 +64,5 @@ urlpatterns = [
     #Upload Image
     path('upload/',views.upload_profile_pic),
     path('profile/<int:Id>',views.get_profile_pic),
+
 ]
