@@ -33,6 +33,7 @@ export default function LogdataModal(props) {
 
       if (response.status === 200) {
         setLogs(response.data);
+        console.log(response.data)
       } else {
         toast.error('Error fetching logs. Please try again.', { position: toast.POSITION.TOP_RIGHT });
       }
@@ -70,6 +71,8 @@ export default function LogdataModal(props) {
             transform: 'translate(-50%, -50%)',
             width: '50vw',
             bgcolor: 'white',
+            maxHeight: '80vh',
+            overflow:'scroll',
             borderRadius: '8px',
             boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
             p: 4,
@@ -83,7 +86,11 @@ export default function LogdataModal(props) {
             <TableBody>
               {logs.map((log) => (
                 <TableRow key={log.id}>
-                  <TableCell>{log.content}</TableCell>
+                  <TableCell>
+                    <Typography>
+                      {log.content.length > 200 ? log.content.substring(0, 200) + "..." : log.content}
+                    </Typography>
+                  </TableCell>
                   <TableCell>{new Date(log.creation_time).toLocaleString()}</TableCell>
                   <TableCell>
                     <Button variant="contained" color="primary" onClick={() => handleInspect(log)}>

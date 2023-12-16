@@ -67,6 +67,7 @@ export default function ModernModalDialog(props) {
             transform: 'translate(-50%, -50%)',
             width: '50vw',
             maxWidth: '800px', // Set a maximum width for larger screens
+            maxHeight: '80vh', // Set a maximum height for larger screens
             bgcolor: 'white',
             borderRadius: '8px',
             boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
