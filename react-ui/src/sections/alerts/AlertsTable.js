@@ -78,6 +78,9 @@ const AlertsTable = (props) => {
                 <TableCell>
                   Created At
                 </TableCell>
+                <TableCell>
+                  Mana
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

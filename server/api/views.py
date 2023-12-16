@@ -639,8 +639,9 @@ def get_full_alert_details(request):
         'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic',
         'creation_time', 'update_time'
     )
+
     alert_details_list = list(alert_details)
-    return Response(alert_details_list,status=status.HTTP_200_OK)
+    return Response(alert_details_list, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_alerts_stats_by_crpf_unit(request, crpf_unit_id):
