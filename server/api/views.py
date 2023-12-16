@@ -352,6 +352,15 @@ def delete_alert(request, Id):
     return Response({"message": "Alert deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET'])
+def view_logline_by_id(request, Id):
+    logline = list(LogLines.objects.filter(id=Id).values())
+    if logline == []:
+        return Response({"message": "Log Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(logline, status=status.HTTP_200_OK)
+
+
 # LogLine Views
 @api_view(['POST'])
 def save_log_line(request):
@@ -635,7 +644,7 @@ def get_full_alert_details(request):
         threat_signature_id=F('log_line__threat__id'),
         user_profile_pic=F('assignee__profile_pic__profile_pic'),
     ).values(
-        'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id',
+        'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id','log_line',
         'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic',
         'creation_time', 'update_time'
     )

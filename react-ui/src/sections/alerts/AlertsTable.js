@@ -20,7 +20,8 @@ import { Avatar } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
-
+import SettingsApplicationsSharpIcon from '@mui/icons-material/SettingsApplicationsSharp';
+import ViewandEditAlert from './ViewandEditAlert'
 
 const AlertsTable = (props) => {
   const {
@@ -79,7 +80,7 @@ const AlertsTable = (props) => {
                   Created At
                 </TableCell>
                 <TableCell>
-                  Mana
+                  Manage
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -158,13 +159,16 @@ const AlertsTable = (props) => {
                   <TableCell>
                   {new Date(alert.creation_time).toLocaleString()}
                 </TableCell>
+                <TableCell>
+                  <ViewandEditAlert alert_id={alert.id} crpf_unit_id={alert.crpf_unit_id} crpf_device_id={alert.crpf_device_id} threat_signature_id={alert.threat_signature_id} log_line={alert.log_line}/>
+                </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </Box>
       </Scrollbar>
-      <TablePagination
+      {/* <TablePagination
         component="div"
         count={count}
         onPageChange={onPageChange}
@@ -172,7 +176,7 @@ const AlertsTable = (props) => {
         page={page}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
-      />
+      /> */}
     </Card>
   );
 };
