@@ -356,13 +356,20 @@ def delete_alert(request, Id):
 def save_log_line(request):
     access_key = request.data.get('access_key')
     line_of_text = request.data.get('log_line')
-    crpf_device_name = request.data.get('crpf_device_name')
-    line_of_text = request.data.get('line_of_text')
+
     try:
-        crpf_device = CrpfDevice.objects.get(device_name=crpf_device_name)
-    except CrpfDevice.DoesNotExist:
-        return Response({'message': 'CrpfDevice not found'}, status=404)
-    log_line = LogLines(content=line_of_text, crpf_device=crpf_device, crpf_unit=crpf_device.crpf_unit)
+        crpf_device_agent_repo = Crpf_Device_Agent_Repo.objects.get(access_key=access_key)
+    except Crpf_Device_Agent_Repo.DoesNotExist:
+        return Response({'message': 'Crpf_Device_Agent_Repo not found for the given access key'}, status=404)
+
+    log_line = LogLines(
+        content=line_of_text,
+        threat=None,  # You might want to set the threat based on your logic
+        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
+        crpf_device=crpf_device_agent_repo.crpf_device_id,
+    )
+    print(line_of_text)
+
     threats = ThreatInfo.objects.all()
     x = False
     for threat in threats:
@@ -371,12 +378,14 @@ def save_log_line(request):
             log_line.threat = threat
             x = True
     log_line.save()
+
     if x:
         alert_instance = Alerts(
             log_line=log_line,
             status='Unresolved',
         )
         alert_instance.save()
+
     return Response({'message': 'Log line saved successfully'}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
