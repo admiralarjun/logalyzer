@@ -62,4 +62,6 @@ urlpatterns = [
     #Upload Image
     path('upload/',views.upload_profile_pic),
     path('profile/<int:Id>',views.get_profile_pic),
+    #Special Urls
+    path('getalertalldetails/',views.get_full_alert_details)
 ]
