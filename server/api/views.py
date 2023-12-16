@@ -9,11 +9,8 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
-<<<<<<< HEAD
 from django.db.models import F
-=======
 import calendar
->>>>>>> c9b5a00363f8769858e0cbf6e8cd589438600dc0
 import re
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
