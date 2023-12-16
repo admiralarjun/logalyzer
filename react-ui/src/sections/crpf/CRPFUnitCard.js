@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import PhoneIcon from '@heroicons/react/24/solid/PhoneIcon'
-import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
-import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography, Button } from '@mui/material';
+import DevicesModal from './DevicesModal';
 
 export const CRPFUnitCard = (props) => {
   const { unit } = props;
@@ -11,8 +11,10 @@ export const CRPFUnitCard = (props) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        cursor:'pointer',
         height: '100%'
       }}
+
     >
       <CardContent>
         <Box
@@ -58,20 +60,9 @@ export const CRPFUnitCard = (props) => {
           direction="row"
           spacing={1}
         >
-          <SvgIcon
-            color="action"
-            fontSize="small"
-          >
-            <ClockIcon />
-          </SvgIcon>
-          <Typography
-            color="text.secondary"
-            display="inline"
-            variant="body2"
-          >
-            {/* You might want to use a property like lastUpdated */}
-            Updated 2hr ago
-          </Typography>
+          <Button>
+            <DevicesModal unitId = {unit.id}/>
+          </Button>
         </Stack>
         <Stack
           alignItems="center"
