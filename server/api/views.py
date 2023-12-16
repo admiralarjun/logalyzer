@@ -28,18 +28,15 @@ from .serializers import UserSerializer, ThreatInfoSerializer, CrpfDeviceSeriali
 # CRPF Units Views
 @api_view(['GET'])
 def view_all_units(request):
-    all_units = list(CrpfUnit.objects.all().values())
-    return Response(all_units,status=status.HTTP_200_OK)
-
+    all_units = CrpfUnit.objects.all()
+    serializer = CrpfUnitSerializer(all_units, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def view_unit_by_id(request, Id):
-    unit = list(CrpfUnit.objects.filter(id=Id).values())
-    if unit == []:
-        return Response({"message": "Unit Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(unit, status=status.HTTP_200_OK)
-
+    unit = get_object_or_404(CrpfUnit, id=Id)
+    serializer = CrpfUnitSerializer(unit)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 @api_view(['POST'])
 def create_crpf_unit(request):
     serializer = CrpfUnitSerializer(data=request.data)
