@@ -24,7 +24,7 @@ const Page = () => {
   useEffect(() => {
     const fetchCRPFUnits = async () => {
       try {
-        const response = await axios.get(API_SERVER+'viewallunits');
+        const response = await axios.get(API_SERVER+'view_all_units');
         setCRPFUnits(response.data);
       } catch (error) {
         console.error('Error fetching CRPF units:', error);

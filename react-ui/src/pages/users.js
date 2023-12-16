@@ -28,7 +28,7 @@ const Page = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(API_SERVER+'viewallusers');
+        const response = await axios.get(API_SERVER+'view_all_users');
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);

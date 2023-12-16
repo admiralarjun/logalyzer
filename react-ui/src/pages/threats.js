@@ -6,8 +6,9 @@ import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { ThreatsTable, threatsTable } from 'src/sections/threats/threatsTable';
-import { ThreatsSearch, threatsSearch } from 'src/sections/threats/threatsSearch';
+import { ThreatsTable } from 'src/sections/threats/ThreatsTable';
+import { ThreatsSearch } from 'src/sections/threats/ThreatsSearch';
+import AddThreat from 'src/sections/threats/AddThreat'
 import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
 const Page = () => {
@@ -87,16 +88,7 @@ const Page = () => {
                 </Stack>
               </Stack>
               <div>
-                <Button
-                  startIcon={(
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  )}
-                  variant="contained"
-                >
-                  Add
-                </Button>
+                <AddThreat/>
               </div>
             </Stack>
             <ThreatsSearch />

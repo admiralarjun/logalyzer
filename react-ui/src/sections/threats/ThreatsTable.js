@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import { SvgIcon } from '@mui/material';
+import BookOpenIcon from '@heroicons/react/24/solid/BookOpenIcon'
+
 import {
   Avatar,
   Box,
@@ -14,6 +17,8 @@ import {
   Typography
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
+import { getInitials } from 'src/utils/get-initials';
+
 export const ThreatsTable = (props) => {
   const {
     count = 0,
@@ -31,7 +36,6 @@ export const ThreatsTable = (props) => {
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
-
 
   return (
     <Card>
@@ -79,7 +83,11 @@ export const ThreatsTable = (props) => {
                 const isSelected = selected.includes(threat.id);
 
                 return (
-                  <TableRow hover key={threat.id} selected={isSelected}>
+                  <TableRow
+                    hover
+                    key={threat.id}
+                    selected={isSelected}
+                  >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
@@ -97,7 +105,9 @@ export const ThreatsTable = (props) => {
                     <TableCell>{threat.signature}</TableCell>
                     <TableCell>{threat.score}</TableCell>
                     <TableCell>{threat.ref_links}</TableCell>
-                    <TableCell>{threat.creation_time}</TableCell>
+                    <TableCell>
+                      {threat.playbooks}
+                    </TableCell>
                   </TableRow>
                 );
               })}

@@ -1,6 +1,3 @@
-import secrets
-
-from django.core.mail import send_mail
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -347,41 +344,32 @@ def delete_alert(request, Id):
     return Response({"message": "Alert deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
+# LogLine Views
 @api_view(['POST'])
 def save_log_line(request):
     access_key = request.data.get('access_key')
     line_of_text = request.data.get('log_line')
+    crpf_device_name = request.data.get('crpf_device_name')
+    line_of_text = request.data.get('line_of_text')
     try:
-        crpf_device_agent_repo = Crpf_Device_Agent_Repo.objects.get(access_key=access_key)
-    except Crpf_Device_Agent_Repo.DoesNotExist:
-        return Response({'message': 'Crpf_Device_Agent_Repo not found for the given access key'}, status=404)
-
-    log_line = LogLines(
-        content=line_of_text,
-        threat=None,  # You might want to set the threat based on your logic
-        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
-        crpf_device=crpf_device_agent_repo.crpf_device_id,
-    )
-
-    # Check if line_of_text is not None before performing the regular expression search
-    if line_of_text is not None:
-        threats = ThreatInfo.objects.all()
-        x = False
-        for threat in threats:
-            pattern = threat.signature
-            if re.search(pattern, line_of_text):
-                log_line.threat = threat
-                x = True
-
+        crpf_device = CrpfDevice.objects.get(device_name=crpf_device_name)
+    except CrpfDevice.DoesNotExist:
+        return Response({'message': 'CrpfDevice not found'}, status=404)
+    log_line = LogLines(content=line_of_text, crpf_device=crpf_device, crpf_unit=crpf_device.crpf_unit)
+    threats = ThreatInfo.objects.all()
+    x = False
+    for threat in threats:
+        pattern = threat.signature
+        if re.search(pattern, line_of_text):
+            log_line.threat = threat
+            x = True
     log_line.save()
-
     if x:
         alert_instance = Alerts(
             log_line=log_line,
             status='Unresolved',
         )
         alert_instance.save()
-
     return Response({'message': 'Log line saved successfully'}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
@@ -478,19 +466,6 @@ def create_crpf_device(request):
     serializer = CrpfDeviceSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        crpf_device_instance = CrpfDevice.objects.get(id=serializer.data['id'])
-
-        # Create Crpf_Device_Agent_Repo instance
-        access_key = secrets.token_hex(16)  # Generates a 16-character hexadecimal token
-        code = "the code is"  # Replace with your desired text
-        version="1"
-        Crpf_Device_Agent_Repo.objects.create(crpf_device_id=crpf_device_instance, access_key=access_key, code=code,version=version)
-
-        # Mail
-        # tosend = "Your Otp Is "  + ""
-        # subject = "Check Your OTP"
-        #
-        # send_mail(subject, tosend, 'sih.eh.central@gmail.com', ["sunnysnivas@gmail.com"], fail_silently=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

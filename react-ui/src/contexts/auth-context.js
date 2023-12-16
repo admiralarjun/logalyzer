@@ -81,12 +81,8 @@ export const AuthProvider = (props) => {
     }
 
     if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
+      const user = window.sessionStorage.getItem('user_details')
+      console.log(user);
 
       dispatch({
         type: HANDLERS.INITIALIZE,
@@ -107,43 +103,29 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
+  
+
+  const signIn = async (token,user_details) => {
+
+    // if (email !== 'demo@devias.io' || password !== 'Password123!') {
+    //   throw new Error('Please check your email and password');
+    // }
+
     try {
       window.sessionStorage.setItem('authenticated', 'true');
+      window.sessionStorage.setItem('user_details',JSON.stringify(user_details));
+      console.log(window.sessionStorage.getItem('user_details'));
     } catch (err) {
       console.error(err);
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
 
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
-  };
-
-  const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
-
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
 
     const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
+      'username':user_details.username,
+      'id':user_details.id
+    }
+    console.log(user);
 
     dispatch({
       type: HANDLERS.SIGN_IN,
@@ -165,7 +147,6 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
         signIn,
         signUp,
         signOut
