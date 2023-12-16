@@ -15,6 +15,11 @@ import { API_SERVER } from 'src/config/constant';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LogdataModal from './LogdataModal';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import DialogContent from '@mui/material/DialogContent';
 
 export default function ModernModalDialog(props) {
   const [open, setOpen] = useState(false);
@@ -43,59 +48,50 @@ export default function ModernModalDialog(props) {
     fetchDevices();
   }, [props.unitId]);
 
-  return (
-    <>
-      <ToastContainer />
+ return (
+  <>
+    <ToastContainer />
 
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<DevicesOtherIcon />}
-        onClick={() => {
-          setOpen(true);
-          fetchDevices(); // Fetch devices when the Devices button is clicked
-        }}
-      >
-        View devices 
-      </Button>
-      <Modal open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '50vw',
-            maxWidth: '800px', // Set a maximum width for larger screens
-            maxHeight: '80vh', // Set a maximum height for larger screens
-            bgcolor: 'white',
-            borderRadius: '8px',
-            boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
-            p: 4,
-          }}
-        >
-          <Typography variant="h6" component="div" gutterBottom>
-            Devices
-          </Typography>
+    <Button
+      variant="contained"
+      color="primary"
+      startIcon={<DevicesOtherIcon />}
+      onClick={() => {
+        setOpen(true);
+        fetchDevices(); // Fetch devices when the Devices button is clicked
+      }}
+      style={{ margin: '10px 0' }} // Add some margin to the button
+    >
+      View devices 
+    </Button>
+
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
+      <DialogTitle>
+        Devices
+        <IconButton style={{ position: 'absolute', right: '8px', top: '8px' }} onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+
+      <DialogContent style={{ maxHeight: '80vh', overflow: 'auto' }}> {/* Set the height and make it scrollable */}
           <TableContainer component={Paper}>
-            <Table>
-              <TableBody>
-                {devices.map((device) => (
-                  <TableRow key={device.id}>
-                    <TableCell>{device.id}</TableCell>
-                    <TableCell>{device.device_name}</TableCell>
-                    <TableCell>{device.device_type}</TableCell>
-                    <TableCell>
-                      <LogdataModal unitDeviceId={device.id} />
-                    </TableCell>
-                    {/* Add more columns based on your device object */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <Table>
+            <TableBody>
+              {devices.map((device) => (
+                <TableRow key={device.id} >
+                  <TableCell>Device ID: {device.id}</TableCell>
+                  <TableCell>{device.device_name}</TableCell>
+                  <TableCell>{device.device_type}</TableCell>
+                  <TableCell>
+                    <LogdataModal unitDeviceId={device.id} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
           </TableContainer>
-        </Box>
-      </Modal>
-    </>
-  );
+      </DialogContent>
+    </Dialog>
+  </>
+);
 }
