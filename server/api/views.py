@@ -64,17 +64,15 @@ def delete_crpf_unit(request, Id):
 # CRPF Devices Views
 @api_view(['GET'])
 def view_all_devices(request):
-    all_devices = list(CrpfDevice.objects.all().values())
-    return Response(all_devices, status=status.HTTP_200_OK)
+    all_devices = CrpfDevice.objects.all()
+    serializer = CrpfDeviceSerializer(all_devices, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def view_device_by_id(request, Id):
-    device = list(CrpfDevice.objects.filter(id=Id).values())
-    if device == []:
-        return Response({"message": "Device Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(device, status=status.HTTP_200_OK)
-
+    device = get_object_or_404(CrpfDevice, id=Id)
+    serializer = CrpfDeviceSerializer(device)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 @api_view(['POST'])
 def create_crpf_device(request):
     serializer = CrpfDeviceSerializer(data=request.data)
@@ -205,12 +203,9 @@ def view_all_threats_info(request):
 
 @api_view(['GET'])
 def view_threat_by_id(request, Id):
-    threat = list(ThreatInfo.objects.filter(id=Id).values())
-    if threat == []:
-        return Response({"message": "Threat Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(threat, status=status.HTTP_200_OK)
-
+    threat = get_object_or_404(ThreatInfo, id=Id)
+    serializer = ThreatInfoSerializer(threat)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def create_threat_info(request):
