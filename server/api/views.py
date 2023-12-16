@@ -351,7 +351,6 @@ def delete_alert(request, Id):
 def save_log_line(request):
     access_key = request.data.get('access_key')
     line_of_text = request.data.get('log_line')
-
     try:
         crpf_device_agent_repo = Crpf_Device_Agent_Repo.objects.get(access_key=access_key)
     except Crpf_Device_Agent_Repo.DoesNotExist:
