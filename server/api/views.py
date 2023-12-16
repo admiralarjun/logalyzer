@@ -123,6 +123,7 @@ def view_user_by_id(request, Id):
     else:
         return Response(user, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 def signup(request):
     serializer = UserSerializer(data=request.data)
