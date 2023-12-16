@@ -202,8 +202,8 @@ def view_all_threats_info(request):
 
 @api_view(['GET'])
 def view_threat_by_id(request, Id):
-    threat = list(ThreatInfo.objects.filter(id=Id).values())
-    if threat == []:
+    threat = (ThreatInfo.objects.filter(id=Id).values())
+    if threat == None:
         return Response({"message": "Threat Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(threat, status=status.HTTP_200_OK)

@@ -13,3 +13,16 @@ export async function fetchPlaybooks() {
     throw error;
   }
 }
+export async function fetchPlaybookById(id) {
+  try {
+    const response = await axios.get(`${API_SERVER}view_playbook_by_id/${id}`);
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`Error fetching playbook with id ${id}: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

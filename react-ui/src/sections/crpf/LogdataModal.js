@@ -14,10 +14,14 @@ import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Switch from '@mui/material/Switch';
+import ThreatInspectModal from './ThreatInspectModel';
+
 
 export default function LogdataModal(props) {
   const [open, setOpen] = useState(false);
   const [logs, setLogs] = useState([]);
+  const [selectedLog, setSelectedLog] = useState(null);
 
   const handleClose = () => {
     setOpen(false);
@@ -38,7 +42,9 @@ export default function LogdataModal(props) {
     }
   };
 
-  
+  const handleInspect = (log) => {
+    setSelectedLog(log);
+  };
 
   return (
     <>
@@ -73,18 +79,22 @@ export default function LogdataModal(props) {
             Device Logs
           </Typography>
           <TableContainer component={Paper}>
-            <Table> 
-              <TableBody>
-                {logs.map((log) => (
-                  <TableRow key={log.id}>
-                    <TableCell>{log.id}</TableCell>
-                    <TableCell>{log.content}</TableCell>
-                    <TableCell>{log.creation_time}</TableCell>
-                    {/* Add more columns based on your log object */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <Table>
+            <TableBody>
+              {logs.map((log) => (
+                <TableRow key={log.id}>
+                  <TableCell>{log.content}</TableCell>
+                  <TableCell>{new Date(log.creation_time).toLocaleString()}</TableCell>
+                  <TableCell>
+                    <Button variant="contained" color="primary" onClick={() => handleInspect(log)}>
+                      Inspect
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <ThreatInspectModal open={selectedLog !== null} onClose={handleClose} log={selectedLog} />
+          </Table>
           </TableContainer>
         </Box>
       </Modal>
