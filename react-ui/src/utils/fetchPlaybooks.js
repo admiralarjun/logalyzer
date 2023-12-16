@@ -17,6 +17,7 @@ export async function fetchPlaybookById(id) {
   try {
     const response = await axios.get(`${API_SERVER}view_playbook_by_id/${id}`);
     if (response.status === 200) {
+      console.log("PlaybookById:" + response.data)
       return response.data;
     } else {
       throw new Error(`Error fetching playbook with id ${id}: ${response.status}`);
