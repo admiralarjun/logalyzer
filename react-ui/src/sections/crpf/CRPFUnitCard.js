@@ -27,8 +27,10 @@ export const CRPFUnitCard = (props) => {
         >
           {/* Assuming you have a logo property in the new structure */}
           <Avatar
-            src={unit.logo}
-            variant="square"
+            src={`http://localhost:8000${unit.unit_image}`}
+            variant='rounded'
+            sx={{ width: 150, height: 150}}
+
           />
         </Box>
         <Typography
@@ -87,6 +89,7 @@ export const CRPFUnitCard = (props) => {
         </Stack>
       </Stack>
     </Card>
+    
   );
 };
 
