@@ -68,7 +68,7 @@ export const Layout = (props) => {
             }
           }}
         >
-          <Box sx={{ p: 3 }}>
+          <Box sx={{ p: 3, display:'flex', alignContent:'center', flexDirection:'column' }}>
             <Typography
               align="center"
               color="inherit"
@@ -93,7 +93,7 @@ export const Layout = (props) => {
               sx={{ mb: 3 }}
               variant="subtitle1"
             >
-              A professional kit that comes with ready-to-use MUI components.
+            Detecting threats and alerting you in real-time, ensuring your systems are secure and efficient.
             </Typography>
             <img
               alt=""

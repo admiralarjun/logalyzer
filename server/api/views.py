@@ -2,6 +2,8 @@ import secrets
 from datetime import timedelta
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
+from django.core.mail import send_mail
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
@@ -24,6 +26,7 @@ from rest_framework.authtoken.models import Token
 from .models import *
 from .serializers import UserSerializer, ThreatInfoSerializer, CrpfDeviceSerializer, CrpfUnitSerializer, \
     LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer, ProfilePicSerializer
+
 
 
 # CRPF Units Views
@@ -81,11 +84,10 @@ def create_crpf_device(request):
         serializer.save()
         crpf_device_instance = CrpfDevice.objects.get(id=serializer.data['id'])
         print("sgdhjs")
-        # Create Crpf_Device_Agent_Repo instance
-        access_key = secrets.token_hex(8)  # Generates a 16-character hexadecimal token
-        code = "the code is"  # Replace with your desired text
+        access_key = secrets.token_hex(8)
+        code = "the code is"
         Crpf_Device_Agent_Repo.objects.create(crpf_device_id=crpf_device_instance, access_key=access_key, code=code)
-
+        send_mail(subject = 'Add an eye-catching subject',message = 'Write an amazing message',from_email = settings.EMAIL_HOST_USER,recipient_list = ['sunnysnivas@gmail.com'])
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -355,6 +357,15 @@ def delete_alert(request, Id):
     alert = get_object_or_404(Alerts, id=Id)
     alert.delete()
     return Response({"message": "Alert deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def view_logline_by_id(request, Id):
+    logline = list(LogLines.objects.filter(id=Id).values())
+    if logline == []:
+        return Response({"message": "Log Id not Found"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(logline, status=status.HTTP_200_OK)
 
 
 # LogLine Views
@@ -632,7 +643,7 @@ def get_full_alert_details(request):
         threat_signature_id=F('log_line__threat__id'),
         user_profile_pic=F('assignee__profile_pic__profile_pic'),
     ).values(
-        'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id',
+        'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id','log_line',
         'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic',
         'creation_time', 'update_time'
     )

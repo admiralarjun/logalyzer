@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Table from '@mui/material/Table';
@@ -17,12 +21,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import Switch from '@mui/material/Switch';
 import ThreatInspectModal from './ThreatInspectModel';
 
-
 export default function LogdataModal(props) {
   const [open, setOpen] = useState(false);
   const [logs, setLogs] = useState([]);
   const [selectedLog, setSelectedLog] = useState(null);
 
+
+  const handleThreatModalClose = () => {
+    setSelectedLog(null);
+  };
+  
   const handleClose = () => {
     setOpen(false);
   };
@@ -33,6 +41,7 @@ export default function LogdataModal(props) {
 
       if (response.status === 200) {
         setLogs(response.data);
+        console.log(response.data)
       } else {
         toast.error('Error fetching logs. Please try again.', { position: toast.POSITION.TOP_RIGHT });
       }
@@ -61,43 +70,41 @@ export default function LogdataModal(props) {
       >
         View Device's Logs
       </Button>
-      <Modal open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '50vw',
-            bgcolor: 'white',
-            borderRadius: '8px',
-            boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.1)',
-            p: 4,
-          }}
-        >
-          <Typography variant="h6" component="div" gutterBottom>
-            Device Logs
-          </Typography>
-          <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              {logs.map((log) => (
-                <TableRow key={log.id}>
-                  <TableCell>{log.content}</TableCell>
-                  <TableCell>{new Date(log.creation_time).toLocaleString()}</TableCell>
-                  <TableCell>
-                    <Button variant="contained" color="primary" onClick={() => handleInspect(log)}>
-                      Inspect
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <ThreatInspectModal open={selectedLog !== null} onClose={handleClose} log={selectedLog} />
-          </Table>
-          </TableContainer>
-        </Box>
-      </Modal>
+
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
+        <DialogTitle>
+          Device Logs
+          <IconButton style={{ position: 'absolute', right: '8px', top: '8px' }} onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent style={{ height: '80vh', overflow: 'auto' }}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableBody>
+                  {logs.map((log) => (
+                    <TableRow key={log.id}>
+                      <TableCell>
+                      <Typography sx={{ color: log.threat != null ? 'red' : 'inherit' }}>
+                          {log.content.length > 200 ? log.content.substring(0, 200) + "..." : log.content}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>{new Date(log.creation_time).toLocaleString()}</TableCell>
+                      <TableCell>
+                        <Button variant="contained" color="primary" onClick={() => handleInspect(log)}>
+                          Inspect
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+        </DialogContent>
+      </Dialog>
+
+      <ThreatInspectModal open={selectedLog !== null} onClose={handleThreatModalClose} log={selectedLog} />
     </>
   );
 }
