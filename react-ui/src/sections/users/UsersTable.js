@@ -106,7 +106,7 @@ export const UsersTable = (props) => {
                         }}
                       />
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={() => window.location.href=`/users/${user.id}`} sx={{cursor:'pointer', color:'blue', fontWeight:'bold'}}>
                       {user.id}
                     </TableCell>
                     <TableCell>
