@@ -22,7 +22,7 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 import SettingsApplicationsSharpIcon from '@mui/icons-material/SettingsApplicationsSharp';
 import ViewandEditAlert from './ViewandEditAlert'
-
+import { getInitials } from 'src/utils/get-initials';
 const AlertsTable = (props) => {
   const {
     count = 0,
@@ -126,8 +126,8 @@ const AlertsTable = (props) => {
                   <TableCell>
                       {alert.assignee__first_name !== null ? (
                         <Chip
-                          avatar={<Avatar alt={alert.assignee__first_name} src={`http://localhost:8000/media/${alert.user_profile_pic}`} >{alert.assignee__first_name}</Avatar>}
-                          label={alert.assignee__first_name}
+                          avatar={<Avatar alt={""} src={`http://localhost:8000/media/${alert.user_profile_pic}`} >{getInitials(`${alert.assignee__first_name} ${alert.assignee__last_name}`)}</Avatar>}
+                          label={alert.assignee__first_name+" "+alert.assignee__last_name}
                           variant="outlined"
                         />
                       ) : null}
