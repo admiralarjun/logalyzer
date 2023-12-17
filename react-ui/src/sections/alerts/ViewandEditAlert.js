@@ -172,7 +172,7 @@ export default function ViewandEditAlert(props) {
               <Typography variant="h6" component="div" gutterBottom>
                 Location
               </Typography>
-              <img src={`http://localhost:8000/${crpfunitData.unit_image}`}
+              <img src={`http://localhost:8000${crpfunitData.unit_image}`}
                alt="Unit Location"
                style={{ width: '20rem', height: 'auto', maxWidth: '100%' }}
               ></img>
