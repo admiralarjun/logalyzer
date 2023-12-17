@@ -1,3 +1,4 @@
+import secrets
 from datetime import timedelta
 
 from dateutil.relativedelta import relativedelta
@@ -78,8 +79,16 @@ def create_crpf_device(request):
     serializer = CrpfDeviceSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        crpf_device_instance = CrpfDevice.objects.get(id=serializer.data['id'])
+        print("sgdhjs")
+        # Create Crpf_Device_Agent_Repo instance
+        access_key = secrets.token_hex(8)  # Generates a 16-character hexadecimal token
+        code = "the code is"  # Replace with your desired text
+        Crpf_Device_Agent_Repo.objects.create(crpf_device_id=crpf_device_instance, access_key=access_key, code=code)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
@@ -472,13 +481,6 @@ def create_crpf_unit(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def create_crpf_device(request):
-    serializer = CrpfDeviceSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_threat_info(request):
