@@ -87,7 +87,7 @@ def create_crpf_device(request):
         access_key = secrets.token_hex(8)
         code = "the code is"
         Crpf_Device_Agent_Repo.objects.create(crpf_device_id=crpf_device_instance, access_key=access_key, code=code)
-        send_mail(subject = 'Add an eye-catching subject',message = 'Write an amazing message',from_email = settings.EMAIL_HOST_USER,recipient_list = ['sunnysnivas@gmail.com'])
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
