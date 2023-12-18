@@ -1,12 +1,15 @@
+import hashlib
 import secrets
 from datetime import timedelta
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -85,9 +88,19 @@ def create_crpf_device(request):
         crpf_device_instance = CrpfDevice.objects.get(id=serializer.data['id'])
         print("sgdhjs")
         access_key = secrets.token_hex(8)
-        code = "the code is"
-        Crpf_Device_Agent_Repo.objects.create(crpf_device_id=crpf_device_instance, access_key=access_key, code=code)
+        agent_content = render_to_string('agent.py', {'access_key': access_key})
+        code = agent_content
+        hashed_access_key = hashlib.md5(access_key.encode()).hexdigest()
+        Crpf_Device_Agent_Repo.objects.create(crpf_device_id=crpf_device_instance, access_key=hashed_access_key, code=code)
+        tosend = "Here is the code"
+        subject = "Created A new device"
+        from_email = 'sih.eh.central@gmail.com'
+        to_email = [crpf_device_instance.crpf_unit.mail_address]
 
+        email = EmailMessage(subject, strip_tags(tosend), from_email, to_email)
+        email.attach('agent.py', agent_content, 'text/plain')
+        email.send()
+        send_mail(subject, tosend, 'sunnysnivas@gmail.com', [email], fail_silently=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -373,7 +386,7 @@ def view_logline_by_id(request, Id):
 def save_log_line(request):
     access_key = request.data.get('access_key')
     line_of_text = request.data.get('log_line')
-
+    access_key= hashlib.md5(access_key.encode()).hexdigest()
     try:
         crpf_device_agent_repo = Crpf_Device_Agent_Repo.objects.get(access_key=access_key)
     except Crpf_Device_Agent_Repo.DoesNotExist:
