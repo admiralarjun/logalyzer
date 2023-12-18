@@ -232,13 +232,7 @@ def view_threat_by_id(request, Id):
     serializer = ThreatInfoSerializer(threat)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-def create_threat_info(request):
-    serializer = ThreatInfoSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['POST'])
@@ -393,29 +387,7 @@ def save_log_line(request):
     except Crpf_Device_Agent_Repo.DoesNotExist:
         return Response({'message': 'Crpf_Device_Agent_Repo not found for the given access key'}, status=404)
 
-    log_line = LogLines(
-        content=line_of_text,
-        threat=None,  # You might want to set the threat based on your logic
-        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
-        crpf_device=crpf_device_agent_repo.crpf_device_id,
-    )
-    print(line_of_text)
-
-    threats = ThreatInfo.objects.all()
-    x = False
-    for threat in threats:
-        pattern = threat.signature
-        if re.search(pattern, line_of_text):
-            log_line.threat = threat
-            x = True
-    log_line.save()
-
-    if x:
-        alert_instance = Alerts(
-            log_line=log_line,
-            status='Unresolved',
-        )
-        alert_instance.save()
+    process_log_line(line_of_text, crpf_device_agent_repo)
 
     return Response({'message': 'Log line saved successfully'}, status=status.HTTP_201_CREATED)
 
@@ -512,6 +484,15 @@ def create_threat_info(request):
     serializer = ThreatInfoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_threat_info_process(request):
+    serializer = ThreatInfoSerializer(data=request.data)
+    if serializer.is_valid():
+        threat_instance = serializer.save()
+        process_threat_log_lines(threat_instance)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -754,3 +735,47 @@ def send_mail_to_someone(request):
         )
     return Response("Sent Successful")
 
+
+
+
+# Utils
+
+def process_log_line(line_of_text, crpf_device_agent_repo):
+    log_line = LogLines(
+        content=line_of_text,
+        threat=None,  # You might want to set the threat based on your logic
+        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
+        crpf_device=crpf_device_agent_repo.crpf_device_id,
+    )
+
+    threats = ThreatInfo.objects.all()
+    threat_found = False
+
+    for threat in threats:
+        pattern = threat.signature
+        if re.search(pattern, line_of_text):
+            log_line.threat = threat
+            threat_found = True
+
+    log_line.save()
+
+    if threat_found:
+        alert_instance = Alerts(
+            log_line=log_line,
+            status='Unresolved',
+        )
+        alert_instance.save()
+
+
+def process_threat_log_lines(threat):
+    pattern=threat.signature
+    all_log_lines = LogLines.objects.all()
+    for log_line in all_log_lines:
+        print("hiiii")
+        if re.search(threat.signature, log_line.content):
+            log_line.threat=threat
+            alert_instance = Alerts(
+                log_line=log_line,
+                status='Unresolved',
+            )
+            alert_instance.save()
