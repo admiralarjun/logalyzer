@@ -31,6 +31,7 @@ urlpatterns = [
     path('delete_playbook/<int:Id>/', views.delete_playbook, name='delete_playbook'),
     #Threats Urls
     path('create_threat_info/', views.create_threat_info, name='create_threat_info'),
+    path('create_threat_info_process/', views.create_threat_info_process, name='create_threat_info_process'),
     path('view_all_threats/',views.view_all_threats_info,name='viewallthreats'),
     path('view_threat_by_id/<int:Id>',views.view_threat_by_id,name='viewthreatbyid'),
     path('update_threat_info/<int:Id>/', views.update_threat_info, name='update_threat_info'),
