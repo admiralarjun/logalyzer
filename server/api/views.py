@@ -1,15 +1,22 @@
+import hashlib
+import secrets
 from datetime import timedelta
 
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
+from django.core.mail import send_mail, EmailMessage
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import F
+from django.core.mail import send_mail
 import calendar
 import re
 from rest_framework.permissions import IsAuthenticated
@@ -23,6 +30,7 @@ from rest_framework.authtoken.models import Token
 from .models import *
 from .serializers import UserSerializer, ThreatInfoSerializer, CrpfDeviceSerializer, CrpfUnitSerializer, \
     LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer, ProfilePicSerializer
+
 
 
 # CRPF Units Views
@@ -78,8 +86,25 @@ def create_crpf_device(request):
     serializer = CrpfDeviceSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        crpf_device_instance = CrpfDevice.objects.get(id=serializer.data['id'])
+        print("sgdhjs")
+        access_key = secrets.token_hex(8)
+        agent_content = render_to_string('agent.py', {'access_key': access_key})
+        code = agent_content
+        hashed_access_key = hashlib.md5(access_key.encode()).hexdigest()
+        Crpf_Device_Agent_Repo.objects.create(crpf_device_id=crpf_device_instance, access_key=hashed_access_key, code=code)
+        tosend = "Here is the code"
+        subject = "Created A new device"
+        from_email = 'sih.eh.central@gmail.com'
+        to_email = [crpf_device_instance.crpf_unit.mail_address]
+
+        email = EmailMessage(subject, strip_tags(tosend), from_email, to_email)
+        email.attach('agent.py', agent_content, 'text/plain')
+        email.send()
+        send_mail(subject, tosend, 'sunnysnivas@gmail.com', [email], fail_silently=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
@@ -207,13 +232,7 @@ def view_threat_by_id(request, Id):
     serializer = ThreatInfoSerializer(threat)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-def create_threat_info(request):
-    serializer = ThreatInfoSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['POST'])
@@ -362,35 +381,13 @@ def view_logline_by_id(request, Id):
 def save_log_line(request):
     access_key = request.data.get('access_key')
     line_of_text = request.data.get('log_line')
-
+    access_key= hashlib.md5(access_key.encode()).hexdigest()
     try:
         crpf_device_agent_repo = Crpf_Device_Agent_Repo.objects.get(access_key=access_key)
     except Crpf_Device_Agent_Repo.DoesNotExist:
         return Response({'message': 'Crpf_Device_Agent_Repo not found for the given access key'}, status=404)
 
-    log_line = LogLines(
-        content=line_of_text,
-        threat=None,  # You might want to set the threat based on your logic
-        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
-        crpf_device=crpf_device_agent_repo.crpf_device_id,
-    )
-    print(line_of_text)
-
-    threats = ThreatInfo.objects.all()
-    x = False
-    for threat in threats:
-        pattern = threat.signature
-        if re.search(pattern, line_of_text):
-            log_line.threat = threat
-            x = True
-    log_line.save()
-
-    if x:
-        alert_instance = Alerts(
-            log_line=log_line,
-            status='Unresolved',
-        )
-        alert_instance.save()
+    process_log_line(line_of_text, crpf_device_agent_repo)
 
     return Response({'message': 'Log line saved successfully'}, status=status.HTTP_201_CREATED)
 
@@ -481,19 +478,21 @@ def create_crpf_unit(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def create_crpf_device(request):
-    serializer = CrpfDeviceSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_threat_info(request):
     serializer = ThreatInfoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_threat_info_process(request):
+    serializer = ThreatInfoSerializer(data=request.data)
+    if serializer.is_valid():
+        threat_instance = serializer.save()
+        process_threat_log_lines(threat_instance)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -640,7 +639,7 @@ def get_full_alert_details(request):
         user_profile_pic=F('assignee__profile_pic__profile_pic'),
     ).values(
         'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id','log_line',
-        'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic',
+        'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic', 'assignee__id',
         'creation_time', 'update_time'
     )
 
@@ -723,3 +722,60 @@ def get_alerts_stats_all_units(request):
             "message": "No alerts found for any CRPF unit",
             "data": []
         }, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def send_mail_to_someone(request):
+    send_mail(
+            'Devices Addition Status',
+              'haaa',
+            'sih.eh.central@gmail.com',
+             ['venkatasairamreddy0404@gmail.com'],
+            fail_silently=False,
+        )
+    return Response("Sent Successful")
+
+
+
+
+# Utils
+
+def process_log_line(line_of_text, crpf_device_agent_repo):
+    log_line = LogLines(
+        content=line_of_text,
+        threat=None,  # You might want to set the threat based on your logic
+        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
+        crpf_device=crpf_device_agent_repo.crpf_device_id,
+    )
+
+    threats = ThreatInfo.objects.all()
+    threat_found = False
+
+    for threat in threats:
+        pattern = threat.signature
+        if re.search(pattern, line_of_text):
+            log_line.threat = threat
+            threat_found = True
+
+    log_line.save()
+
+    if threat_found:
+        alert_instance = Alerts(
+            log_line=log_line,
+            status='Unresolved',
+        )
+        alert_instance.save()
+
+
+def process_threat_log_lines(threat):
+    pattern=threat.signature
+    all_log_lines = LogLines.objects.all()
+    for log_line in all_log_lines:
+        print("hiiii")
+        if re.search(threat.signature, log_line.content):
+            log_line.threat=threat
+            alert_instance = Alerts(
+                log_line=log_line,
+                status='Unresolved',
+            )
+            alert_instance.save()

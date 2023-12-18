@@ -20,26 +20,9 @@ import { fetchPlaybooks } from 'src/utils/PlaybooksUtility';
 import SettingsApplicationsSharpIcon from '@mui/icons-material/SettingsApplicationsSharp';
 import Grid from '@mui/material/Grid';
 
-
-const ColorPicker = ({ value, onChange }) => (
-  <TextField
-    type="color"
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    label="Color"
-  />
-);
-
 export default function ViewandEditAlert(props) {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [signature, setSignature] = useState('');
-  const [score, setScore] = useState(0);
-  const [color, setColor] = useState('#000000');
-  const [bgColor, setBgColor] = useState('#000000');
-  const [ref_links, setRefLinks] = useState('');
-  const [selectedPlaybooks, setSelectedPlaybooks] = useState([]);
+  
   const [playbooks, setPlaybooks] = useState([]);
 
   const[alertData,setalertData] = useState([]);
@@ -48,6 +31,10 @@ export default function ViewandEditAlert(props) {
   const[threatData,setthreatData] = useState([]);
   const[loglinedata,setloglinedata] = useState([]);
   const[usersdata,setusersdata] = useState([]);
+  const [status, setStatus] = useState(props.alert_status);
+  const [userid, setUserid] = useState(props.assignid);
+  
+  // setStatus(props.alert_status);
 
   const handleClose = () => {
     setOpen(false);
@@ -55,6 +42,22 @@ export default function ViewandEditAlert(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("Status",status);
+    console.log("Userid",userid);
+    const url = `${API_SERVER}update_alert/${alertData.id}/`;
+
+    const formData = {
+      status: status,
+      assignee: userid,
+    }
+    console.log(formData);
+
+  try {
+    const response = await axios.post(url, formData);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
   };
 
   return (
@@ -96,6 +99,12 @@ export default function ViewandEditAlert(props) {
               setloglinedata(LoglineResponse.data);
             
               setusersdata(UserDataResponse.data);
+
+              setStatus(props.alert_status);
+
+              console.log("userid",userid);
+              console.log("assigene id",props.assignid)
+              console.log("status",status);
 
 
             } catch (error) {
@@ -215,49 +224,50 @@ export default function ViewandEditAlert(props) {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <form onSubmit={handleSubmit}>
-                <Typography variant="h6" component="div" gutterBottom padding={2}>
-                  Update Alert Details
-                </Typography>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} xl={6}>
-                    <FormControl>
-                      <FormLabel>Status</FormLabel>
-                      <Select
-                        label="Status"
-                        value={alertData.status}
-                        onChange={(e) => setDescription(e.target.value)}
-                      >
-                        <MenuItem value="Resolved">Resolved</MenuItem>
-                        <MenuItem value="Unresolved">Unresolved</MenuItem>
-                        <MenuItem value="Ignored">Ignored</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} xl={6}>
-                  <FormControl fullWidth>
-                  <FormLabel id="user-select-label">Select User</FormLabel>
-                  <Select
-                    labelId="user-select-label"
-                    id="user-select"
-                    // value={selectedUser}
-                    // onChange={handleSelectChange}
-                  >
-                    {usersdata.map((user) => (
-                      <MenuItem key={user.id} value={user.id}>
-                        {user.username}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button type="submit" variant="contained" color="primary">
-                      Submit
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
+            <form onSubmit={handleSubmit}>
+      <Typography variant="h6" component="div" gutterBottom padding={2}>
+        Update Alert Details
+      </Typography>
+      <Grid container spacing={1}>
+        <Grid item xs={12} xl={6}>
+          <FormControl>
+            <FormLabel>Status</FormLabel>
+            <Select
+              label="Status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <MenuItem value="Resolved">Resolved</MenuItem>
+              <MenuItem value="Unresolved">Unresolved</MenuItem>
+              <MenuItem value="Ignored">Ignored</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} xl={6}>
+          <FormControl fullWidth>
+            <FormLabel id="user-select-label">Select User</FormLabel>
+            <Select
+              labelId="user-select-label"
+              id="user-select"
+              value={userid}
+              onChange={(e) => setUserid(e.target.value)}
+            >
+             {/* <MenuItem value={alertData.assignee_id}>{usersdata.username}</MenuItem> */}
+              {usersdata.map((user) => (
+                <MenuItem key={user.id} value={user.id}>
+                  {user.username}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <Button type="submit" variant="contained" color="primary">
+            Update
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
             </Grid>
           </Grid>
           </div>

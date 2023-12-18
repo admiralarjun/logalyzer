@@ -160,7 +160,7 @@ const AlertsTable = (props) => {
                   {new Date(alert.creation_time).toLocaleString()}
                 </TableCell>
                 <TableCell>
-                  <ViewandEditAlert alert_id={alert.id} crpf_unit_id={alert.crpf_unit_id} crpf_device_id={alert.crpf_device_id} threat_signature_id={alert.threat_signature_id} log_line={alert.log_line}/>
+                  <ViewandEditAlert alert_id={alert.id} crpf_unit_id={alert.crpf_unit_id} crpf_device_id={alert.crpf_device_id} threat_signature_id={alert.threat_signature_id} log_line={alert.log_line} assignid={alert.assignee__id} alert_status={alert.status}/>
                 </TableCell>
                 </TableRow>
               ))}
