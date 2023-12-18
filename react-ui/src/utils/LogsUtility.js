@@ -2,8 +2,13 @@ import axios from 'axios'
 import { API_SERVER } from 'src/config/constant';
 
 export async function viewLogLineById(id) {
-  const response = await axios.get(`${API_SERVER}view_log_line_by_id/${id}`);
-  return response.data;
+  try {
+    const response = await axios.get(`${API_SERVER}view_log_line_by_id/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null; 
+  }
 }
 
 export async function getLogLinesByDevice(deviceId) {
