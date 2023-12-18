@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import F
+from django.core.mail import send_mail
 import calendar
 import re
 from rest_framework.permissions import IsAuthenticated
@@ -640,7 +641,7 @@ def get_full_alert_details(request):
         user_profile_pic=F('assignee__profile_pic__profile_pic'),
     ).values(
         'id', 'crpf_unit_name','crpf_unit_id', 'crpf_device_name','crpf_device_id', 'threat_signature_name','threat_signature_id','log_line',
-        'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic',
+        'status', 'assignee__first_name','assignee__last_name', 'user_profile_pic', 'assignee__id',
         'creation_time', 'update_time'
     )
 
@@ -723,3 +724,16 @@ def get_alerts_stats_all_units(request):
             "message": "No alerts found for any CRPF unit",
             "data": []
         }, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def send_mail_to_someone(request):
+    send_mail(
+            'Devices Addition Status',
+              'haaa',
+            'sih.eh.central@gmail.com',
+             ['venkatasairamreddy0404@gmail.com'],
+            fail_silently=False,
+        )
+    return Response("Sent Successful")
+
