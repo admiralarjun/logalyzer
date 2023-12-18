@@ -31,10 +31,10 @@ export default function ViewandEditAlert(props) {
   const[threatData,setthreatData] = useState([]);
   const[loglinedata,setloglinedata] = useState([]);
   const[usersdata,setusersdata] = useState([]);
-  const [status, setStatus] = useState(alert.status);
+  const [status, setStatus] = useState(props.alert_status);
   const [userid, setUserid] = useState(props.assignid);
- 
-  console.log("userid start",userid);
+  
+  // setStatus(props.alert_status);
 
   const handleClose = () => {
     setOpen(false);
@@ -44,6 +44,20 @@ export default function ViewandEditAlert(props) {
     event.preventDefault();
     console.log("Status",status);
     console.log("Userid",userid);
+    const url = `${API_SERVER}update_alert/${alertData.id}/`;
+
+    const formData = {
+      status: status,
+      assignee: userid,
+    }
+    console.log(formData);
+
+  try {
+    const response = await axios.post(url, formData);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
   };
 
   return (
@@ -86,10 +100,11 @@ export default function ViewandEditAlert(props) {
             
               setusersdata(UserDataResponse.data);
 
-              setStatus(alertData.status);
+              setStatus(props.alert_status);
 
               console.log("userid",userid);
               console.log("assigene id",props.assignid)
+              console.log("status",status);
 
 
             } catch (error) {
