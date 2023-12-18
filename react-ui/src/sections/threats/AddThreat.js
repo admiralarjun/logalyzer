@@ -16,7 +16,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
-import { fetchPlaybooks } from 'src/utils/fetchPlaybooks';
+import { fetchPlaybooks } from 'src/utils/PlaybooksUtility';
 
 const ColorPicker = ({ value, onChange }) => (
   <TextField

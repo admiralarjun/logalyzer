@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, IconButton, Box, Typography, Table, TableBody, TableCell, TableRow, Stack, Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { fetchPlaybookById } from 'src/utils/fetchPlaybooks';
+import { fetchPlaybookById } from 'src/utils/PlaybooksUtility';
 import { useState, useEffect } from 'react';
-import { fetchThreatsById } from 'src/utils/fetchThreats';
+import { fetchThreatsById } from 'src/utils/ThreatsUtility';
 import ReactMarkdown from 'react-markdown';
 
 // Define your styles
