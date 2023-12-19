@@ -1,6 +1,8 @@
 import hashlib
 import secrets
 from datetime import timedelta
+from django.http import JsonResponse
+import requests
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
@@ -802,3 +804,29 @@ def process_threat_log_lines(threat):
                 status='Unresolved',
             )
             alert_instance.save()
+
+@api_view(['GET'])
+def api_request_view(request):
+    # Replace 'https://api.example.com' with the actual API endpoint you want to call
+    api_url = 'https://api.example.com'
+    url = "http://localhost:8000/api/profile/3gi"
+
+    try:
+        # Make a GET request to the API
+        post_data = {'key1': 'value1', 'key2': 'value2'}
+
+        # Make a POST request to the API
+        # response = requests.post(api_url, data=post_data)
+        response = requests.get(url)
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # If successful, you can handle the API response here
+            api_data = response.json()
+            return JsonResponse({'success': True, 'data': api_data})
+        else:
+            # If not successful, you can handle the error here
+            return JsonResponse(
+                {'success': False, 'error': f'API request failed with status code {response.status_code}'})
+    except Exception as e:
+        # Handle exceptions (e.g., network issues, timeouts, etc.)
+        return JsonResponse({'success': False, 'error': f'Error: {str(e)}'})
