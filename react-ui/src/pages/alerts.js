@@ -9,6 +9,8 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { AlertsTable } from 'src/sections/alerts/AlertsTable';
 import { AlertsSearch } from 'src/sections/alerts/AlertsSearch';
 import { OverviewLatestAlerts } from 'src/sections/overview/OverviewLatestAlerts';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+
 
 import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
@@ -18,6 +20,7 @@ const AlertsPage = () => {
   const [alerts, setalerts] = useState([]);
   const alertsIds = useMemo(() => alerts.map((alert) => alert.id), [alerts]);
   const alertsSelection = useSelection(alertsIds);
+  const [filter, setFilter] = useState('all');
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -31,18 +34,39 @@ const AlertsPage = () => {
     const fetchalerts = async () => {
       try {
         const response = await axios.get(API_SERVER+'get_alert_all_details');
-        setalerts(response.data);
+        const fetchedAlerts = response.data;
+
+      // Filtering logic
+      const filteredAlerts = fetchedAlerts.filter((alert) => {
+        switch (filter) {
+          case 'resolved':
+            return alert.status === 'Resolved';
+          case 'unresolved':
+            return alert.status === 'Unresolved';
+          case 'ignored':
+            return alert.status === 'Ignored';
+          default:
+            // For 'all' or any other unknown filter, include all alerts
+            return true;
+        }
+      });
+
+      setalerts(filteredAlerts);
       } catch (error) {
         console.error('Error fetching alerts:', error);
       }
     };
 
     fetchalerts();
-  }, []);
+  }, [filter]);
 
   const handleSearch = useCallback((searchTerm) => {
     // You can implement search functionality here
     console.log(`Searching for: ${searchTerm}`);
+  }, []);
+
+  const handleFilterChange = useCallback((event) => {
+    setFilter(event.target.value);
   }, []);
 
   return (
@@ -84,7 +108,23 @@ const AlertsPage = () => {
               </Button>
             </div>
           </Stack>
+          <Stack direction={"row"}>
           <AlertsSearch onSearch={handleSearch} />
+          <FormControl sx={{padding:"1rem"}}>
+          <InputLabel id="filter-label">Filter</InputLabel>
+          <Select
+            labelId="filter-label"
+            id="filter"
+            value={filter}
+            onChange={handleFilterChange}
+          >
+            <MenuItem value="all">Show All</MenuItem>
+            <MenuItem value="resolved">Resolved Alerts</MenuItem>
+            <MenuItem value="unresolved">Unresolved Alerts</MenuItem>
+            <MenuItem value="ignored">Ignored Alerts</MenuItem>
+          </Select>
+        </FormControl>
+        </Stack>
           <AlertsTable
             count={alerts.length}
             items={alerts}
@@ -97,32 +137,6 @@ const AlertsPage = () => {
             page={page}
             rowsPerPage={rowsPerPage}
             selected={alertsSelection.selected}
-          />
-          <OverviewLatestAlerts
-            orders={[
-              {
-                id: 'f69f88012978187a6c12897f',
-                ref: 'DEV1049',
-                amount: 30.5,
-                customer: {
-                  name: 'Ekaterina Tankova'
-                },
-                createdAt: 1555016400000,
-                status: 'pending'
-              },
-              {
-                id: '9eaa1c7dd4433f413c308ce2',
-                ref: 'DEV1048',
-                amount: 25.1,
-                customer: {
-                  name: 'Cao Yu'
-                },
-                createdAt: 1555016400000,
-                status: 'delivered'
-              },
-              // Add more order data as needed
-            ]}
-            sx={{ height: '100%' }}
           />
         </Stack>
       </Container>
