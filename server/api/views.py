@@ -275,9 +275,8 @@ def process_csv_file(request):
                         'ref_links': ref_links,
                     }
                 )
-
                 # Hardcoded playbook IDs
-                playbook_ids = [4]  # Replace with your actual playbook IDs
+                playbook_ids = [3]  # Replace with your actual playbook IDs
                 threat_info.playbooks.set(Playbook.objects.filter(id__in=playbook_ids))
 
             return Response({'status': 'success', 'message': 'CSV data processed and stored successfully.'})
@@ -285,6 +284,7 @@ def process_csv_file(request):
             return Response({'status': 'error', 'message': f'Error decoding CSV file: {str(e)}'})
     else:
         return Response({'status': 'error', 'message': 'Invalid data provided.'})
+
 
 @api_view(['GET'])
 def view_threat_by_id(request, Id):

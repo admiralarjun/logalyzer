@@ -36,12 +36,19 @@ class CrpfDevice(models.Model):
     def __str__(self):
         return self.device_name
 
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True, default="Default")
+
+    def __str__(self):
+        return self.name
+
 
 class ThreatInfo(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,unique=True)
     description = models.TextField()
     signature = models.CharField(max_length=255)
+    categories = models.ManyToManyField(Category, related_name='threats', default=None)
     score = models.IntegerField()
     color = ColorField(default='#000000', verbose_name='Color')
     bgcolor = ColorField(default='#000000', verbose_name='Color')
@@ -95,10 +102,12 @@ class Profile_pic(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     profile_pic = models.FileField(blank=False, upload_to="profile_pictures/", null=True)
+    skills = models.ManyToManyField(Category)
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.name)
+
 
 class Crpf_Device_Agent_Repo(models.Model):
     id = models.AutoField(primary_key=True)
