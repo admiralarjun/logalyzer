@@ -3,6 +3,8 @@ import Head from 'next/head';
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
+import { PlaybooksTable } from 'src/sections/playbook/PlaybooksTable';
+
 import {
   Box,
   Button,
@@ -94,7 +96,7 @@ const Page = () => (
             </div>
           </Stack>
           <PlaybookSearch />
-          <Grid
+          {/* <Grid
             container
             spacing={3}
           >
@@ -108,7 +110,8 @@ const Page = () => (
                 <PlaybookCard unit={unit} />
               </Grid>
             ))}
-          </Grid>
+          </Grid> */}
+          <PlaybooksTable/>
           <Box
             sx={{
               display: 'flex',

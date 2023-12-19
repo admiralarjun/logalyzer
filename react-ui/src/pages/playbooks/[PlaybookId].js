@@ -34,7 +34,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Account | Logalyzer</title>
+        <title>Playbook | Logalyzer</title>
       </Head>
       <Box
       component="main"
