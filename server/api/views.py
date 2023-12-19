@@ -135,8 +135,31 @@ def delete_crpf_device(request, Id):
 @api_view(['GET'])
 def view_all_users(request):
     all_users = User.objects.all()
-    serializer = UserSerializer(all_users, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    users_data = []
+    for user in all_users:
+        user_data = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name':user.first_name,
+            'last_name':user.last_name,
+            'status':user.is_active,
+            'last_login':user.last_login
+        }
+
+        try:
+            profile_pic = Profile_pic.objects.get(user_id=user.id)
+            if(profile_pic!=[]):
+                user_data['profile_pic'] = profile_pic.profile_pic.url
+
+        except Profile_pic.DoesNotExist:
+            user_data['profile_pic'] = None
+
+        users_data.append(user_data)
+
+    return Response(users_data, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def view_user_by_id(request, Id):
@@ -512,7 +535,7 @@ def get_profile_pic(request, Id):
         serializer = ProfilePicSerializer(profile_pic)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Profile_pic.DoesNotExist:
-        return Response({"message": "User Id not Found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"message": "User Id not Found"})
 
 @api_view(['GET'])
 def get_devices_by_unit(request, crpf_unit_id):
