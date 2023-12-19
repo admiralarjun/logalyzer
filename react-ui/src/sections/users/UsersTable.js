@@ -22,6 +22,8 @@ import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import axios from 'axios';
 import { SvgIcon } from '@mui/material'
+import { useEffect } from 'react';
+import { API_SERVER } from 'src/config/constant';
 export const UsersTable = (props) => {
   const {
     count = 0,
@@ -39,6 +41,21 @@ export const UsersTable = (props) => {
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
+  
+  // useEffect(() => {
+  //   (async (id) => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:8000/api/profile/${id}`);
+  //       if(response.data.message!="User Id not Found"){
+  //         const profilePicUrl = `http://localhost:8000${response.data.profile_pic}`; // Using 'profile_pic' property
+  //         console.log(id,profilePicUrl.toString());
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching profile picture URL:', error);
+  //     }
+  //   })(someId); // Replace 'someId' with the actual id
+  // }, []); // Add dependencies here if any
+  
 
   return (
     <Card>
@@ -110,9 +127,18 @@ export const UsersTable = (props) => {
                       {user.id}
                     </TableCell>
                     <TableCell>
-                      <Avatar src={user.avatar} alt={`Avatar-${user.id}`}>
-                        {getInitials(`${user.first_name} ${user.last_name}`)}
-                      </Avatar>
+                      {
+                        user.profile_pic ? (
+                          <Avatar src={`http://localhost:8000/${user.profile_pic}`}>
+                            {getInitials(`${user.first_name} ${user.last_name}`)}
+                          </Avatar>
+                        ) : (
+                          <Avatar>
+                            {getInitials(`${user.first_name} ${user.last_name}`)}
+                          </Avatar>
+                        )
+                      }
+                      
                     </TableCell>
                     <TableCell>
                       {user.username}
@@ -129,7 +155,7 @@ export const UsersTable = (props) => {
                     </TableCell>
 
                     <TableCell>
-                      {user.is_active ? (
+                      {user.status ? (
                         <SvgIcon fontSize='small'>
                           <CheckCircleIcon color='green' />
                         </SvgIcon>
