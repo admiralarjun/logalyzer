@@ -299,7 +299,7 @@ def process_csv_file(request):
                     }
                 )
                 # Hardcoded playbook IDs
-                playbook_ids = [3]  # Replace with your actual playbook IDs
+                playbook_ids = [2]  # Replace with your actual playbook IDs
                 threat_info.playbooks.set(Playbook.objects.filter(id__in=playbook_ids))
 
             return Response({'status': 'success', 'message': 'CSV data processed and stored successfully.'})
@@ -307,7 +307,6 @@ def process_csv_file(request):
             return Response({'status': 'error', 'message': f'Error decoding CSV file: {str(e)}'})
     else:
         return Response({'status': 'error', 'message': 'Invalid data provided.'})
-
 
 @api_view(['GET'])
 def view_threat_by_id(request, Id):
@@ -422,6 +421,25 @@ def update_alert(request, Id):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def update_alert_status(request, Id):
+    alert = get_object_or_404(Alerts, id=Id)
+    ps=alert.status
+    # Extract only the 'status' field from the request data
+    status_data = {'status': request.data.get('status')}
+    if((request.data.get('status') == 'Resolved') and ps !="Resolved"):
+        profile_pic=Profile_pic.objects.get(id=alert.assignee.id)
+        profile_pic.num_resolved_alerts=profile_pic.num_resolved_alerts+ 1
+        profile_pic.save()
+    serializer = AlertsSerializer(alert, data=status_data, partial=True)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -826,7 +844,7 @@ def send_mail_to_someone(request):
 def process_log_line(line_of_text, crpf_device_agent_repo):
     log_line = LogLines(
         content=line_of_text,
-        threat=None,  # You might want to set the threat based on your logic
+        threat=None,
         crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
         crpf_device=crpf_device_agent_repo.crpf_device_id,
     )
@@ -843,11 +861,26 @@ def process_log_line(line_of_text, crpf_device_agent_repo):
     log_line.save()
 
     if threat_found:
-        alert_instance = Alerts(
-            log_line=log_line,
-            status='Unresolved',
-        )
-        alert_instance.save()
+        # Get the categories associated with the threat
+        threat_categories = log_line.threat.categories.all()
+
+        # Get one user who has skills matching the categories associated with the threat
+        user_with_matching_skills = Profile_pic.objects.filter(skills__in=threat_categories)
+        sorted_users = sorted(user_with_matching_skills,
+                              key=lambda user: user.num_assigned_alerts - user.num_resolved_alerts)
+        user_with_fewest_alerts = sorted_users[0] if sorted_users else None
+        user_with_fewest_alerts.num_assigned_alerts+=1
+        user_with_fewest_alerts.save()
+        # Assign task to the user with matching skills
+        if user_with_matching_skills:
+            alert_instance = Alerts(
+                log_line=log_line,
+                status='Unresolved',
+                assignee=user_with_fewest_alerts.user_id,
+            )
+            alert_instance.save()
+    return user_with_matching_skills
+
 
 
 def process_threat_log_lines(threat):

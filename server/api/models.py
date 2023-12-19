@@ -47,7 +47,7 @@ class ThreatInfo(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,unique=True)
     description = models.TextField()
-    signature = models.CharField(max_length=255)
+    signature = models.CharField(max_length=500)
     categories = models.ManyToManyField(Category, related_name='threats', default=None)
     score = models.IntegerField()
     color = ColorField(default='#000000', verbose_name='Color')
@@ -104,7 +104,8 @@ class Profile_pic(models.Model):
     profile_pic = models.FileField(blank=False, upload_to="profile_pictures/", null=True)
     skills = models.ManyToManyField(Category)
     created_date = models.DateTimeField(default=timezone.now)
-
+    num_assigned_alerts = models.IntegerField(default=0)
+    num_resolved_alerts = models.IntegerField(default=0)
     def __str__(self):
         return str(self.name)
 

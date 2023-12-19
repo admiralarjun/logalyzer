@@ -51,6 +51,7 @@ urlpatterns = [
     path('get_alerts_stats_all_units/', views.get_alerts_stats_all_units, name='get_alerts_stats_all_units'),
     path('set_assignee/', views.set_assignee, name='set_assignee'),
     path('update_alert/<int:Id>/', views.update_alert, name='update_alert'),
+    path('update_alert_status/<int:Id>/', views.update_alert_status, name='update_alert_status'),
     path('delete_alert/<int:Id>/', views.delete_alert, name='delete_alert'),
     #LogLine Urls
     path('save_log_line/', views.save_log_line, name='save_log_line'),
