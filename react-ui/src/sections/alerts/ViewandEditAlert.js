@@ -2,24 +2,17 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import Input from '@mui/material/Input';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import AddIcon from '@mui/icons-material/Add';
-import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import Chip from '@mui/material/Chip';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { API_SERVER } from 'src/config/constant';
-import { fetchPlaybooks } from 'src/utils/PlaybooksUtility';
 import SettingsApplicationsSharpIcon from '@mui/icons-material/SettingsApplicationsSharp';
 import Grid from '@mui/material/Grid';
-import { fetchPlaybookById } from 'src/utils/PlaybooksUtility';
 export default function ViewandEditAlert(props) {
   const [open, setOpen] = useState(false);
   
@@ -55,14 +48,25 @@ export default function ViewandEditAlert(props) {
   try {
     const response = await axios.post(url, formData);
     console.log(response.data);
+    setOpen(false);
+    toast.success('Alert details updated successfully!', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000, // Auto close the notification after 3000 milliseconds (3 seconds)
+    });
   } catch (error) {
     console.error(error);
+    setOpen(false);
+    toast.error('Error updating alert details!', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 3000, // Auto close the notification after 3000 milliseconds (3 seconds)
+    });
   }
   };
 
   return (
     <>
-    <ToastContainer />
+      <ToastContainer
+        />
 
       <Button
         onClick={async () => {
@@ -218,7 +222,7 @@ export default function ViewandEditAlert(props) {
           <Typography variant="body1" color="text.secondary" gutterBottom>
             Threat Reference Links: {threatData.ref_links}
           </Typography>
-          <Typography variant="body1" color="text.secondary" gutterBottom variant="button" >
+          <Typography  color="text.secondary" gutterBottom variant="button" >
             <a href={`/playbooks/${threatData.playbooks}`}>View playbook</a>
           </Typography>
             </Grid>
@@ -252,7 +256,6 @@ export default function ViewandEditAlert(props) {
               value={userid}
               onChange={(e) => setUserid(e.target.value)}
             >
-             {/* <MenuItem value={alertData.assignee_id}>{usersdata.username}</MenuItem> */}
               {usersdata.map((user) => (
                 <MenuItem key={user.id} value={user.id}>
                   {user.username}
