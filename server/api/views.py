@@ -1,9 +1,14 @@
+import csv
 import hashlib
+import os
 import secrets
 from datetime import timedelta
+from io import TextIOWrapper
+import chardet
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
+from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.core.mail import send_mail, EmailMessage
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
@@ -29,8 +34,8 @@ from rest_framework.authtoken.models import Token
 
 from .models import *
 from .serializers import UserSerializer, ThreatInfoSerializer, CrpfDeviceSerializer, CrpfUnitSerializer, \
-    LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer, ProfilePicSerializer
-
+    LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer, ProfilePicSerializer, \
+    CsvUploadSerializer
 
 
 # CRPF Units Views
@@ -225,6 +230,61 @@ def view_all_threats_info(request):
     serializer = ThreatInfoSerializer(all_threats, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def process_csv_file(request):
+    serializer = CsvUploadSerializer(data=request.data)
+
+    if serializer.is_valid():
+        uploaded_file = serializer.validated_data['file']
+
+        try:
+            # Try decoding using utf-8, but ignore errors
+            csv_data = TextIOWrapper(uploaded_file.file, encoding='utf-8', errors='ignore')
+            reader = csv.reader(csv_data)
+
+            # Skip the header row
+            next(reader, None)
+
+            # Process the data rows
+            for row in reader:
+                # Sanitize data
+                name = row[0].strip()
+                description = row[1].strip()
+                signature = row[2].strip()
+
+                # Handle the score column more robustly
+                score_str = row[3].strip()
+                try:
+                    score = int(score_str)
+                except ValueError:
+                    score = 0  # Provide a default value or handle the error in a way that suits your application
+
+                color = row[4].strip()
+                bgcolor = row[5].strip()
+                ref_links = row[6].strip()
+
+                # Create or update ThreatInfo object
+                threat_info, created = ThreatInfo.objects.update_or_create(
+                    name=name,
+                    defaults={
+                        'description': description,
+                        'signature': signature,
+                        'score': score,
+                        'color': color,
+                        'bgcolor': bgcolor,
+                        'ref_links': ref_links,
+                    }
+                )
+
+                # Hardcoded playbook IDs
+                playbook_ids = [4]  # Replace with your actual playbook IDs
+                threat_info.playbooks.set(Playbook.objects.filter(id__in=playbook_ids))
+
+            return Response({'status': 'success', 'message': 'CSV data processed and stored successfully.'})
+        except UnicodeDecodeError as e:
+            return Response({'status': 'error', 'message': f'Error decoding CSV file: {str(e)}'})
+    else:
+        return Response({'status': 'error', 'message': 'Invalid data provided.'})
 
 @api_view(['GET'])
 def view_threat_by_id(request, Id):
@@ -779,3 +839,5 @@ def process_threat_log_lines(threat):
                 status='Unresolved',
             )
             alert_instance.save()
+
+
