@@ -124,13 +124,17 @@ const AlertsTable = (props) => {
                     {alert.crpf_device_name}
                   </TableCell>
                   <TableCell>
-                      {alert.assignee__first_name !== null ? (
+                      {alert.user_profile_pic !== null ? (
                         <Chip
                           avatar={<Avatar alt={""} src={`http://localhost:8000/media/${alert.user_profile_pic}`} >{getInitials(`${alert.assignee__first_name} ${alert.assignee__last_name}`)}</Avatar>}
                           label={alert.assignee__first_name+" "+alert.assignee__last_name}
                           variant="outlined"
                         />
-                      ) : null}
+                      ) : (<Chip
+                        avatar={<Avatar>{getInitials(`${alert.assignee__first_name} ${alert.assignee__last_name}`)}</Avatar>}
+                        label={alert.assignee__first_name+" "+alert.assignee__last_name}
+                        variant="outlined"
+                      />)}
                     </TableCell>
                     <TableCell>
                     {alert.status === 'Resolved' ? (
