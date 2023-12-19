@@ -19,7 +19,7 @@ import { API_SERVER } from 'src/config/constant';
 import { fetchPlaybooks } from 'src/utils/PlaybooksUtility';
 import SettingsApplicationsSharpIcon from '@mui/icons-material/SettingsApplicationsSharp';
 import Grid from '@mui/material/Grid';
-
+import { fetchPlaybookById } from 'src/utils/PlaybooksUtility';
 export default function ViewandEditAlert(props) {
   const [open, setOpen] = useState(false);
   
@@ -218,8 +218,8 @@ export default function ViewandEditAlert(props) {
           <Typography variant="body1" color="text.secondary" gutterBottom>
             Threat Reference Links: {threatData.ref_links}
           </Typography>
-          <Typography variant="body1" color="text.secondary" gutterBottom>
-            PlayBooks Related to the threat: {threatData.playbooks}
+          <Typography variant="body1" color="text.secondary" gutterBottom variant="button" >
+            <a href={`/playbooks/${threatData.playbooks}`}>View playbook</a>
           </Typography>
             </Grid>
 
