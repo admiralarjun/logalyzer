@@ -21,14 +21,17 @@ import { API_SERVER } from 'src/config/constant';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const OverLatestThreats = () => {
+export const OverviewLatestThreats = () => {
   const [threats, setThreats] = useState([]);
   useEffect(() => {
   (async () => {
     try {
       const response = await axios.get(`${API_SERVER}view_all_threats/`);
-      setThreats(response.data);
-      console.log(response.data)
+      const sortedthreats = response.data.sort((a, b) => new Date(b.creation_time) - new Date(a.creation_time));
+      // Get only the first 6 items
+      const limitedthreats = sortedthreats.slice(0, 6);
+      setThreats(limitedthreats);
+
     } catch (error) {
       console.error('Error fetching threats:', error);
     }
@@ -41,7 +44,7 @@ export const OverLatestThreats = () => {
       <List>
         {threats.map((threat, index) => {
           const hasDivider = index < threats.length - 1;
-          const ago = (threat.creation_time);
+          const ago = new Date(threat.creation_time).toLocaleString();
           return (
             <ListItem
               divider={hasDivider}
@@ -79,7 +82,7 @@ export const OverLatestThreats = () => {
               <ListItemText
                 primary={threat.name}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
-                secondary={`Updated ${ago} ago`}
+                secondary={`Created on ${ago}`}
                 secondaryTypographyProps={{ variant: 'body2' }}
               />
               <IconButton edge="end">
@@ -102,6 +105,7 @@ export const OverLatestThreats = () => {
           )}
           size="small"
           variant="text"
+          onClick={() => window.location.href=`/threats`}
         >
           View all
         </Button>
