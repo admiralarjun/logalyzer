@@ -21,7 +21,7 @@ import { API_SERVER } from 'src/config/constant';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const OverLatestThreats = () => {
+export const OverviewLatestThreats = () => {
   const [threats, setThreats] = useState([]);
   useEffect(() => {
   (async () => {

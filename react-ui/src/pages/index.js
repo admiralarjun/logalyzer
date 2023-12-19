@@ -4,7 +4,7 @@ import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { OverviewThreats } from 'src/sections/overview/OverviewThreats';
 import { OverviewLatestAlerts } from 'src/sections/overview/OverviewLatestAlerts';
-import { OverLatestThreats } from 'src/sections/overview/OverLatestThreats';
+import { OverviewLatestThreats } from 'src/sections/overview/OverviewLatestThreats';
 import { OverviewAnnualThreats } from 'src/sections/overview/OverviewAnnualThreats';
 import { OverviewRemediationInProcess } from 'src/sections/overview/OverviewRemediationInProcess';
 import { OverviewRemediatedThreats } from 'src/sections/overview/OverviewRemediatedThreats';
@@ -111,7 +111,7 @@ const Page = () => (
             md={6}
             lg={4}
           >
-            <OverLatestThreats/>
+            <OverviewLatestThreats/>
           </Grid>
           <Grid
             xs={12}
