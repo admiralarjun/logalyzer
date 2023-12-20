@@ -55,6 +55,7 @@ urlpatterns = [
     path('delete_alert/<int:Id>/', views.delete_alert, name='delete_alert'),
     #LogLine Urls
     path('save_log_line/', views.save_log_line, name='save_log_line'),
+    path('t_save_log_line/', views.t_save_log_line, name='t_save_log_line'),
     path('view_log_line_by_id/<int:Id>', views.view_logline_by_id, name='view_log_line_by_id'),
     path('get_log_lines_by_device/<int:crpf_device_id>/', views.get_log_lines_by_device, name='get_log_lines_by_device'),
     path('get_log_lines_by_unit/<int:crpf_unit_id>/', views.get_log_lines_by_unit, name='get_log_lines_by_unit'),
