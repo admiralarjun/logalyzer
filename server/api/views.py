@@ -1,9 +1,15 @@
+import csv
 import hashlib
+import os
 import secrets
 from datetime import timedelta
+from io import TextIOWrapper
+import chardet
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
+from django.contrib.sites import requests
+from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.core.mail import send_mail, EmailMessage
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
@@ -29,8 +35,8 @@ from rest_framework.authtoken.models import Token
 
 from .models import *
 from .serializers import UserSerializer, ThreatInfoSerializer, CrpfDeviceSerializer, CrpfUnitSerializer, \
-    LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer, ProfilePicSerializer
-
+    LogLinesSerializer, AlertsSerializer, PlaybookSerializer, LogLineSerializer, ProfilePicSerializer, \
+    CsvUploadSerializer
 
 
 # CRPF Units Views
@@ -135,8 +141,31 @@ def delete_crpf_device(request, Id):
 @api_view(['GET'])
 def view_all_users(request):
     all_users = User.objects.all()
-    serializer = UserSerializer(all_users, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    users_data = []
+    for user in all_users:
+        user_data = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name':user.first_name,
+            'last_name':user.last_name,
+            'status':user.is_active,
+            'last_login':user.last_login
+        }
+
+        try:
+            profile_pic = Profile_pic.objects.get(user_id=user.id)
+            if(profile_pic!=[]):
+                user_data['profile_pic'] = profile_pic.profile_pic.url
+
+        except Profile_pic.DoesNotExist:
+            user_data['profile_pic'] = None
+
+        users_data.append(user_data)
+
+    return Response(users_data, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 def view_user_by_id(request, Id):
@@ -225,6 +254,60 @@ def view_all_threats_info(request):
     serializer = ThreatInfoSerializer(all_threats, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def process_csv_file(request):
+    serializer = CsvUploadSerializer(data=request.data)
+
+    if serializer.is_valid():
+        uploaded_file = serializer.validated_data['file']
+
+        try:
+            # Try decoding using utf-8, but ignore errors
+            csv_data = TextIOWrapper(uploaded_file.file, encoding='utf-8', errors='ignore')
+            reader = csv.reader(csv_data)
+
+            # Skip the header row
+            next(reader, None)
+
+            # Process the data rows
+            for row in reader:
+                # Sanitize data
+                name = row[0].strip()
+                description = row[1].strip()
+                signature = row[2].strip()
+
+                # Handle the score column more robustly
+                score_str = row[3].strip()
+                try:
+                    score = int(score_str)
+                except ValueError:
+                    score = 0  # Provide a default value or handle the error in a way that suits your application
+
+                color = row[4].strip()
+                bgcolor = row[5].strip()
+                ref_links = row[6].strip()
+
+                # Create or update ThreatInfo object
+                threat_info, created = ThreatInfo.objects.update_or_create(
+                    name=name,
+                    defaults={
+                        'description': description,
+                        'signature': signature,
+                        'score': score,
+                        'color': color,
+                        'bgcolor': bgcolor,
+                        'ref_links': ref_links,
+                    }
+                )
+                # Hardcoded playbook IDs
+                playbook_ids = [2]  # Replace with your actual playbook IDs
+                threat_info.playbooks.set(Playbook.objects.filter(id__in=playbook_ids))
+
+            return Response({'status': 'success', 'message': 'CSV data processed and stored successfully.'})
+        except UnicodeDecodeError as e:
+            return Response({'status': 'error', 'message': f'Error decoding CSV file: {str(e)}'})
+    else:
+        return Response({'status': 'error', 'message': 'Invalid data provided.'})
 
 @api_view(['GET'])
 def view_threat_by_id(request, Id):
@@ -339,6 +422,25 @@ def update_alert(request, Id):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def update_alert_status(request, Id):
+    alert = get_object_or_404(Alerts, id=Id)
+    ps=alert.status
+    # Extract only the 'status' field from the request data
+    status_data = {'status': request.data.get('status')}
+    if((request.data.get('status') == 'Resolved') and ps !="Resolved"):
+        profile_pic=Profile_pic.objects.get(id=alert.assignee.id)
+        profile_pic.num_resolved_alerts=profile_pic.num_resolved_alerts+ 1
+        profile_pic.save()
+    serializer = AlertsSerializer(alert, data=status_data, partial=True)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -512,7 +614,7 @@ def get_profile_pic(request, Id):
         serializer = ProfilePicSerializer(profile_pic)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Profile_pic.DoesNotExist:
-        return Response({"message": "User Id not Found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"message": "User Id not Found"})
 
 @api_view(['GET'])
 def get_devices_by_unit(request, crpf_unit_id):
@@ -743,7 +845,7 @@ def send_mail_to_someone(request):
 def process_log_line(line_of_text, crpf_device_agent_repo):
     log_line = LogLines(
         content=line_of_text,
-        threat=None,  # You might want to set the threat based on your logic
+        threat=None,
         crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
         crpf_device=crpf_device_agent_repo.crpf_device_id,
     )
@@ -760,11 +862,26 @@ def process_log_line(line_of_text, crpf_device_agent_repo):
     log_line.save()
 
     if threat_found:
-        alert_instance = Alerts(
-            log_line=log_line,
-            status='Unresolved',
-        )
-        alert_instance.save()
+        # Get the categories associated with the threat
+        threat_categories = log_line.threat.categories.all()
+
+        # Get one user who has skills matching the categories associated with the threat
+        user_with_matching_skills = Profile_pic.objects.filter(skills__in=threat_categories)
+        sorted_users = sorted(user_with_matching_skills,
+                              key=lambda user: user.num_assigned_alerts - user.num_resolved_alerts)
+        user_with_fewest_alerts = sorted_users[0] if sorted_users else None
+        user_with_fewest_alerts.num_assigned_alerts+=1
+        user_with_fewest_alerts.save()
+        # Assign task to the user with matching skills
+        if user_with_matching_skills:
+            alert_instance = Alerts(
+                log_line=log_line,
+                status='Unresolved',
+                assignee=user_with_fewest_alerts.user_id,
+            )
+            alert_instance.save()
+    return user_with_matching_skills
+
 
 
 def process_threat_log_lines(threat):
@@ -779,3 +896,86 @@ def process_threat_log_lines(threat):
                 status='Unresolved',
             )
             alert_instance.save()
+
+
+
+
+
+
+# Temp
+
+def api_request_view(request,content,ip,access_key):
+    url = f"http://127.0.0.1:8080"
+    try:
+        print(content)
+        post_data = {'content': content,'access_key':access_key}
+        response = requests.get(url,post_data)
+        if response.status_code == 200:
+            api_data = response.json()
+            return JsonResponse({'success': True, 'data': api_data})
+        else:
+            return JsonResponse(
+                {'success': False, 'error': f'API request failed with status code {response.status_code}'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': f'Error: {str(e)}'})
+
+@api_view(['POST'])
+def t_save_log_line(request):
+    access_key = request.data.get('access_key')
+    line_of_text = request.data.get('log_line')
+    access_key = hashlib.md5(access_key.encode()).hexdigest()
+    try:
+        crpf_device_agent_repo = Crpf_Device_Agent_Repo.objects.get(access_key=access_key)
+
+    except Crpf_Device_Agent_Repo.DoesNotExist:
+        return Response({'message': 'Crpf_Device_Agent_Repo not found for the given access key'}, status=404)
+
+    t_process_log_line(request, line_of_text, crpf_device_agent_repo)
+
+    return Response({'message': 'Log line saved successfully'}, status=status.HTTP_201_CREATED)
+
+
+def t_process_log_line(request,line_of_text, crpf_device_agent_repo):
+    print("nsdbdcbvhhdhhhd")
+    log_line = LogLines(
+        content=line_of_text,
+        threat=None,
+        crpf_unit=crpf_device_agent_repo.crpf_device_id.crpf_unit,
+        crpf_device=crpf_device_agent_repo.crpf_device_id,
+    )
+    threats = ThreatInfo.objects.all()
+    threatt =None
+    threat_found = False
+    for threat in threats:
+        pattern = threat.signature
+        if re.search(pattern, line_of_text):
+            log_line.threat = threat
+            threatt=threat
+            threat_found = True
+    log_line.save()
+    if threat_found:
+        threat_categories = log_line.threat.categories.all()
+        user_with_matching_skills = Profile_pic.objects.filter(skills__in=threat_categories)
+
+        # sorted_users = sorted(user_with_matching_skills,
+        #                       key=lambda user: user.num_assigned_alerts - user.num_resolved_alerts)
+        sorted_users=user_with_matching_skills
+        user_with_fewest_alerts = sorted_users[0] if sorted_users else None
+        user_with_fewest_alerts.num_assigned_alerts += 1
+        user_with_fewest_alerts.save()
+        alert_instance=None
+        if user_with_matching_skills:
+            alert_instance = Alerts(
+                log_line=log_line,
+                status='Unresolved',
+                assignee=user_with_fewest_alerts.user_id,
+            )
+
+            alert_instance.save()
+        ip_address = request.data.get('ip_addr')
+
+        incident = Incident.objects.create(alert=alert_instance, threat=threatt, ip_address=ip_address)
+        incident.save()
+        api_request_view(request,threatt.remediation,ip_address,request.data.get('access_key'))
+    return Response({'message': 'Log line saved successfully'}, status=status.HTTP_201_CREATED)
+

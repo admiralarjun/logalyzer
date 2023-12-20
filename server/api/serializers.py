@@ -53,3 +53,7 @@ class LogLineSerializer(serializers.ModelSerializer):
     class Meta:
         model = LogLines
         fields = '__all__'
+
+
+class CsvUploadSerializer(serializers.Serializer):
+    file = serializers.FileField()

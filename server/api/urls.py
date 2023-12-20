@@ -31,6 +31,7 @@ urlpatterns = [
     path('delete_playbook/<int:Id>/', views.delete_playbook, name='delete_playbook'),
     #Threats Urls
     path('create_threat_info/', views.create_threat_info, name='create_threat_info'),
+    path('process_csv_file/', views.process_csv_file, name='process_csv_file'),
     path('create_threat_info_process/', views.create_threat_info_process, name='create_threat_info_process'),
     path('view_all_threats/',views.view_all_threats_info,name='viewallthreats'),
     path('view_threat_by_id/<int:Id>',views.view_threat_by_id,name='viewthreatbyid'),
@@ -50,9 +51,11 @@ urlpatterns = [
     path('get_alerts_stats_all_units/', views.get_alerts_stats_all_units, name='get_alerts_stats_all_units'),
     path('set_assignee/', views.set_assignee, name='set_assignee'),
     path('update_alert/<int:Id>/', views.update_alert, name='update_alert'),
+    path('update_alert_status/<int:Id>/', views.update_alert_status, name='update_alert_status'),
     path('delete_alert/<int:Id>/', views.delete_alert, name='delete_alert'),
     #LogLine Urls
     path('save_log_line/', views.save_log_line, name='save_log_line'),
+    path('t_save_log_line/', views.t_save_log_line, name='t_save_log_line'),
     path('view_log_line_by_id/<int:Id>', views.view_logline_by_id, name='view_log_line_by_id'),
     path('get_log_lines_by_device/<int:crpf_device_id>/', views.get_log_lines_by_device, name='get_log_lines_by_device'),
     path('get_log_lines_by_unit/<int:crpf_unit_id>/', views.get_log_lines_by_unit, name='get_log_lines_by_unit'),
@@ -70,6 +73,7 @@ urlpatterns = [
     #Special Urls
     path('get_alert_all_details/',views.get_full_alert_details),
     #MAil test
-    path('sendmail/',views.send_mail_to_someone)
+    path('sendmail/',views.send_mail_to_someone),
+    path('sendrequest/',views.api_request_view),
 
 ]
