@@ -830,3 +830,5 @@ def api_request_view(request):
     except Exception as e:
         # Handle exceptions (e.g., network issues, timeouts, etc.)
         return JsonResponse({'success': False, 'error': f'Error: {str(e)}'})
+
+
