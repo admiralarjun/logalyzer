@@ -55,6 +55,7 @@ class ThreatInfo(models.Model):
     ref_links = models.TextField()
     playbooks = models.ManyToManyField('Playbook')
     creation_time = models.DateTimeField(default=timezone.now, editable=False)
+    remediation = models.TextField()
     def __str__(self):
         return self.name
 
@@ -119,5 +120,7 @@ class Crpf_Device_Agent_Repo(models.Model):
 
     def __str__(self):
         return str(self.crpf_device_id)
+
+
 
 

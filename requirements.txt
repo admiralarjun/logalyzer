@@ -1,6 +1,0 @@
-pillow = 10.1
-python-dateutil= 2.8.2
-django-colorfield = 0.10.1
-djangorestframework= 3.14.0
-rest_framework= 3.14.0
-environ = 0.9.0

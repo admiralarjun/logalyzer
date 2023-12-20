@@ -72,6 +72,7 @@ urlpatterns = [
     #Special Urls
     path('get_alert_all_details/',views.get_full_alert_details),
     #MAil test
-    path('sendmail/',views.send_mail_to_someone)
+    path('sendmail/',views.send_mail_to_someone),
+    path('sendrequest/',views.api_request_view),
 
 ]
