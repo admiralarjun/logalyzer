@@ -8,6 +8,7 @@ import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import ShieldExclamationIcon from '@heroicons/react/24/solid/ShieldExclamationIcon'
 import BellAlertIcon from '@heroicons/react/24/solid/BellAlertIcon'
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
+import ExclamationCircleIcon from '@heroicons/react/24/solid/ExclamationCircleIcon';
 import { SvgIcon } from '@mui/material';
 import PlayIcon from '@heroicons/react/24/solid/PlayIcon'
 export const items = [
@@ -35,6 +36,15 @@ export const items = [
     icon: (
       <SvgIcon fontSize="small">
         <BellAlertIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Incidents',
+    path: '/incidents',
+    icon: (
+      <SvgIcon fontSize="small">
+        <ExclamationCircleIcon />
       </SvgIcon>
     )
   },
