@@ -1,0 +1,107 @@
+2023-12-15 06:28:02 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:28:10 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:28:30 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpB7BF.tmp","error":0,"size":15}} | Webshell attack | {"username":"rrgerger","password":"qgregerg"}
+2023-12-15 06:35:29 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:35:38 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:36:04 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:36:23 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:52:55 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:59:09 | GET | /sih-victim/ |  |  | []
+2023-12-15 06:59:51 | POST | /sih-victim/ | {"file":{"name":"no-preview.ico","type":"image\/x-icon","tmp_name":"D:\\xampp\\tmp\\php1E7B.tmp","error":0,"size":5844}} | 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 | {"username":"sgaggege","password":"segthytjuj"}
+2023-12-15 07:00:39 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpDC2F.tmp","error":0,"size":15}} | V2Vic2hlbGwgYXR0YWNr | {"username":"2100031810","password":"qgregerg"}
+2023-12-15 07:02:52 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpE118.tmp","error":0,"size":15}} | Webshell attack | {"username":"2100031810","password":"qgregerg"}
+2023-12-15 07:03:54 | POST | /sih-victim/ | {"file":{"name":"AddTwoNumbers.java","type":"application\/octet-stream","tmp_name":"D:\\xampp\\tmp\\phpD55C.tmp","error":0,"size":1023}} | import java.util.Scanner;
+
+public class AddTwoNumbers {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        String s1=s.next();
+        String s2=s.next();
+        String sum = addTwoNums(s1, s2);
+        System.out.println(sum);
+        s.close();
+    }
+    static String addTwoNums(String s1, String s2){
+        StringBuilder sb = new StringBuilder();
+        int l1=s1.length();
+        int l2 = s2.length();
+        int sum=0,c=0;
+        for(int i=l1-1,j=l2-1; i>=0||j>=0; i--,j--){
+            if(i>-1&&j>-1)
+                sum = (s1.charAt(i)-'0')+(s2.charAt(j)-'0')+c;
+            else if(i>-1)
+                sum = (s1.charAt(i)-'0')+c;
+            else
+                sum = (s2.charAt(j)-'0')+c;
+            c = sum/10;
+            sb.append((char)(sum%10+'0'));
+        }
+        if(c > 0)
+            sb.append((char)(c+'0'));
+        
+        sb.reverse();
+        String string = sb.toString();
+        return string;
+    }
+}
+ | {"username":"fdgtehtrh","password":"rgerqgteqh"}
+2023-12-15 07:27:31 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php72D0.tmp","error":0,"size":3}} | 101 | {"username":"pranavi","password":"fwfwgreg"}
+2023-12-15 07:39:25 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php581F.tmp","error":0,"size":3}} | 101 | {"username":"pranavi","password":"fwfwgreg"}
+2023-12-15 07:40:01 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpE702.tmp","error":0,"size":3}} | 101 | {"username":"pranavi","password":"fwfwgreg"}
+2023-12-15 07:40:46 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php96EB.tmp","error":0,"size":3}} | 101 | {"username":"pranavi","password":"fwfwgreg"}
+2023-12-15 07:41:27 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php3714.tmp","error":0,"size":15}} | Webshell attack | {"username":"2100031810","password":"abcde"}
+2023-12-15 07:45:56 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php4EFE.tmp","error":0,"size":15}} | Webshell attack | {"username":"2100031810","password":"agraregr"}
+2023-12-15 07:47:56 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php24B9.tmp","error":0,"size":15}} | Webshell attack | {"username":"2100031810","password":"agraregr"}
+2023-12-15 07:50:08 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php28C8.tmp","error":0,"size":15}} | Webshell attack | {"username":"klu_2100031810","password":"rgregetg"}
+2023-12-15 07:50:43 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpB375.tmp","error":0,"size":15}} | Webshell attack | {"username":"klu_2100031810","password":"rgregetg"}
+2023-12-15 07:54:31 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php2D4A.tmp","error":0,"size":15}} | Webshell attack | {"username":"pranavi","password":"rgerqgteqh"}
+2023-12-15 07:56:05 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php9C5C.tmp","error":0,"size":15}} | Webshell attack | {"username":"pranavi","password":"rgerqgteqh"}
+2023-12-15 07:57:49 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php309A.tmp","error":0,"size":15}} | Webshell attack | {"username":"2100031810@kluniversity.in","password":"agraregr"}
+2023-12-15 07:58:42 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php4E.tmp","error":0,"size":15}} | Webshell attack | {"username":"2100031810@kluniversity.in","password":"qgregerg"}
+2023-12-15 08:02:11 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php31D1.tmp","error":0,"size":15}} | Webshell attack | {"username":"2100031810","password":"qgregerg"}
+2023-12-15 08:06:06 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpC6A1.tmp","error":0,"size":15}} | Webshell attack | {"username":"pranavi","password":"agraregr"}
+2023-12-15 08:06:44 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php5B21.tmp","error":0,"size":15}} | Webshell attack | {"username":"pranavi","password":"agraregr"}
+2023-12-15 08:07:09 | POST | /sih-victim/ | {"file":{"name":"Webshell_attack.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpBD96.tmp","error":0,"size":15}} | Webshell attack | {"username":"pranavi","password":"agraregr"}
+2023-12-15 09:08:06 | GET | /sih-victim/ |  |  | []
+2023-12-15 09:08:23 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpCACF.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"agargth"}
+2023-12-15 09:08:49 | GET | /sih-victim/ |  |  | []
+2023-12-15 09:08:52 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php3FE1.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"agargth"}
+2023-12-15 09:08:56 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php4CA4.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"agargth"}
+2023-12-15 09:11:18 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php76D8.tmp","error":0,"size":3}} | 101 | {"username":"2100031810@kluniversity.in","password":"agraregr"}
+2023-12-15 09:13:30 | GET | /sih-victim/ |  |  | []
+2023-12-15 09:13:33 | GET | /sih-victim/ |  |  | []
+2023-12-15 09:19:41 | GET | /sih-victim/ |  |  | []
+2023-12-15 09:19:46 | GET | /sih-victim/ |  |  | []
+2023-12-15 09:19:55 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php5B6A.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"agraregr"}
+2023-12-15 09:27:54 | GET | /sih-victim/ |  |  | []
+2023-12-15 09:28:02 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\phpC9D4.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"agraregr"}
+2023-12-15 10:33:01 | GET | /sih-victim/ |  |  | []
+2023-12-15 10:33:09 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php66EA.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"qgregerg"}
+2023-12-15 10:34:17 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php7175.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"qgregerg"}
+2023-12-15 10:36:19 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php4CCE.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"qgregerg"}
+2023-12-15 10:36:39 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php9B7B.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"qgregerg"}
+2023-12-15 10:47:16 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php5432.tmp","error":0,"size":3}} | 101 | {"username":"2100031810","password":"rgregetg"}
+2023-12-15 10:52:51 | POST | /sih-victim/ | {"file":{"name":"count.txt","type":"text\/plain","tmp_name":"D:\\xampp\\tmp\\php708C.tmp","error":0,"size":3}} | 101 | {"username":"' or 1=1 --","password":"agraregr"}
+2023-12-15 11:01:01 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:02:09 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:03:00 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:09:36 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:09:39 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:11:16 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:11:18 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:11:22 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"2100031810","password":""}
+2023-12-15 11:24:31 | GET | /sih-victim/ |  |  | []
+2023-12-15 11:24:42 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"' ","password":""}
+2023-12-15 11:24:50 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"' or 1=1 --","password":""}
+2023-12-15 11:26:50 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"' or 1=1 --","password":""}
+2023-12-15 11:33:49 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"SQL.*injection|';\\\\s*DROP\\\\s*TABLE|1=1;--","password":""}
+2023-12-16 07:00:46 | GET | /sih-victim/ |  |  | []
+2023-12-16 07:13:58 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"xmlrpc.php","password":""}
+2023-12-16 07:17:03 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"1=1","password":""}
+2023-12-16 07:30:55 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"1=1;--","password":""}
+2023-12-16 07:33:42 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"1=1;--","password":""}
+2023-12-16 07:40:44 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"1=1","password":""}
+2023-12-16 07:40:53 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"1=1;--","password":""}
+2023-12-16 07:42:56 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"1=1;--","password":""}
+2023-12-16 07:52:03 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"1=1;--","password":""}
+2023-12-16 07:52:20 | POST | /sih-victim/ | {"file":{"name":"","type":"","tmp_name":"","error":4,"size":0}} |  | {"username":"2100031810","password":""}
