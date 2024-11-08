@@ -222,11 +222,7 @@ export default function ViewandEditAlert(props) {
           <Typography variant="body1" color="text.secondary" gutterBottom>
             Threat Reference Links: {threatData.ref_links}
           </Typography>
-<<<<<<< HEAD
-          <Typography variant="body1" color="text.secondary" gutterBottom sx={{cursor:'pointer'}} >
-=======
           <Typography  color="text.secondary" gutterBottom variant="button" >
->>>>>>> 2ea0895f4e330f1c08acbc1d281c86f26446becc
             <a href={`/playbooks/${threatData.playbooks}`}>View playbook</a>
           </Typography>
             </Grid>
